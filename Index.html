@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr. Angel | Links</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        @keyframes bgShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        body { 
+            background: linear-gradient(-45deg, #150505, #3d1412, #1a0a05, #050505); 
+            background-size: 400% 400%; 
+            animation: bgShift 15s ease infinite; 
+            color: #ffffff; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            min-height: 100vh; 
+            padding: 50px 20px; 
+            overflow-x: hidden; 
+        }
+        #intro-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #050505;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+            cursor: pointer;
+        }
+        .enter-text {
+            font-size: 16px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #ff9e3d;
+            animation: pulseText 1.5s infinite;
+        }
+        @keyframes pulseText { 0% { opacity: 0.5; } 50% { opacity: 1; text-shadow: 0 0 10px #ff3c00; } 100% { opacity: 0.5; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 10px rgba(255, 120, 0, 0.4); } 50% { box-shadow: 0 0 25px rgba(255, 120, 0, 0.8), 0 0 10px #ff3c00; } 100% { box-shadow: 0 0 10px rgba(255, 120, 0, 0.4); } }
+        .profile-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; background-color: #000; border: 2px solid #ff9e3d; opacity: 0; }
+        h1 { font-size: 26px; margin-bottom: 5px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; color: #ffd79e; text-shadow: 0 0 5px #ff7b00, 0 0 15px #ff3c00; opacity: 0; }
+        p { font-size: 13px; color: #d1b49e; margin-bottom: 40px; text-align: center; letter-spacing: 2px; text-transform: uppercase; opacity: 0; }
+        .links-container { width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 18px; }
+        .link-button { display: block; width: 100%; padding: 16px 20px; background-color: rgba(20, 10, 5, 0.6); color: #ffecd2; text-decoration: none; text-align: center; border-radius: 8px; font-size: 14px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; transition: all 0.3s ease; border: 1px solid rgba(255, 120, 0, 0.4); box-shadow: 0 0 10px rgba(255, 60, 0, 0.1); opacity: 0; }
+        .link-button:hover { background-color: rgba(255, 120, 0, 0.15); border-color: #ff9e3d; color: #ffffff; box-shadow: 0 0 20px rgba(255, 120, 0, 0.6); transform: translateY(-4px) scale(1.02); }
+        .start .profile-img { animation: fadeInDown 0.8s ease-out forwards, pulseGlow 3s infinite 0.8s; }
+        .start h1 { animation: fadeInUp 0.8s ease-out 0.2s forwards; }
+        .start p { animation: fadeInUp 0.8s ease-out 0.4s forwards; }
+        .start .link-button { animation: fadeInUp 0.6s ease-out forwards; }
+        .start .link-button:nth-child(1) { animation-delay: 0.60s; } 
+        .start .link-button:nth-child(2) { animation-delay: 0.75s; } 
+        .start .link-button:nth-child(3) { animation-delay: 0.90s; } 
+        .start .link-button:nth-child(4) { animation-delay: 1.05s; }
+        .start .link-button:nth-child(5) { animation-delay: 1.20s; }
+        .start .link-button:nth-child(6) { animation-delay: 1.35s; }
+        .start .link-button:nth-child(7) { animation-delay: 1.50s; }
+        .start .link-button:nth-child(8) { animation-delay: 1.65s; }
+    </style>
+</head>
+<body>
+    <div id="intro-screen">
+        <span class="enter-text">Tocar para Entrar</span>
+    </div>
+    <audio id="sfx-abertura" src="abertura.mp3" preload="auto"></audio>
+    <img src="perfil.jpg" alt="Logo Mr. Angel" class="profile-img">
+    <h1>Mr. Angel</h1>
+    <p>IT Support | Video Editor</p>
+    <div class="links-container">
+        <a href="#" target="_blank" class="link-button">Privacy</a>
+        <a href="#" target="_blank" class="link-button">Xvideos</a>
+        <a href="#" target="_blank" class="link-button">Telegram</a>
+        <a href="#" target="_blank" class="link-button">Camera Prive</a>
+        <a href="#" target="_blank" class="link-button">Stripchat</a>
+        <a href="#" target="_blank" class="link-button">X Twitter</a>
+        <a href="#" target="_blank" class="link-button">Onlyfans</a>
+        <a href="#" target="_blank" class="link-button">Fatalfans</a>
+    </div>
+    <script>
+        const introScreen = document.getElementById('intro-screen');
+        const somAbertura = document.getElementById('sfx-abertura');
+        introScreen.addEventListener('click', () => {
+            somAbertura.play().catch(() => console.log("Áudio bloqueado."));
+            introScreen.style.opacity = '0';
+            setTimeout(() => { introScreen.style.display = 'none'; }, 500);
+            document.body.classList.add('start');
+        });
+    </script>
+</body>
+</html>
