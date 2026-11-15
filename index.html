@@ -22,23 +22,27 @@
             position: relative;
         }
 
-        /* --- TELA INICIAL RESPONSIVA --- */
+        /* --- TELA INICIAL (BOTÃO NATIVO TELA CHEIA) --- */
         #intro-screen {
             position: fixed;
             inset: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            border: none;
+            outline: none;
             background: radial-gradient(circle at center, #1c0904 0%, #050202 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 9999;
+            z-index: 99999;
             transition: opacity 0.6s ease;
             cursor: pointer;
             padding: 20px;
-            touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
+            appearance: none;
+            -webkit-appearance: none;
         }
 
         .enter-btn {
@@ -473,10 +477,10 @@
 </head>
 <body>
 
-    <!-- Tela Inicial -->
-    <div id="intro-screen">
-        <div class="enter-btn">Tocar para Entrar</div>
-    </div>
+    <!-- Tela Inicial como botão nativo de tela cheia -->
+    <button type="button" id="intro-screen" aria-label="Tocar para Entrar">
+        <span class="enter-btn">Tocar para Entrar</span>
+    </button>
 
     <!-- Camadas de Fumaça Realista -->
     <div class="smoke-layer smoke-ambient"></div>
@@ -634,4 +638,85 @@
                 spark.style.left = `${center + Math.cos(angle) * startRadius}px`;
                 spark.style.top = `${center + Math.sin(angle) * startRadius}px`;
                 spark.style.setProperty('--tx', `${Math.cos(angle) * (endRadius - startRadius)}px`);
-                spark.style.
+                spark.style.setProperty('--ty', `${Math.sin(angle) * (endRadius - startRadius)}px`);
+
+                profileWrapper.appendChild(spark);
+            }
+        }
+
+        function initButtonFire(button) {
+            const canvas = button.querySelector('.btn-fire-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let sparks = [];
+            let burning = false;
+            let animId = null;
+
+            function resizeCanvas() {
+                const rect = canvas.getBoundingClientRect();
+                if (rect.width > 0 && rect.height > 0) {
+                    canvas.width = rect.width;
+                    canvas.height = rect.height;
+                }
+            }
+
+            function spawnFlameParticle() {
+                const w = canvas.width;
+                const h = canvas.height;
+                const spread = (Math.random() + Math.random()) / 2;
+                const x = w * (0.08 + spread * 0.84);
+                particles.push({
+                    x,
+                    y: h - 3,
+                    vx: (Math.random() - 0.5) * 0.85,
+                    vy: -(1.6 + Math.random() * 2.1),
+                    radius: 9 + Math.random() * 13,
+                    life: 0,
+                    maxLife: 24 + Math.random() * 18,
+                    wobble: Math.random() * Math.PI * 2
+                });
+
+                if (Math.random() > 0.62) {
+                    sparks.push({
+                        x: w * (0.12 + Math.random() * 0.76),
+                        y: h - 8,
+                        vx: (Math.random() - 0.5) * 1.4,
+                        vy: -(2.4 + Math.random() * 2.6),
+                        size: 1.2 + Math.random() * 1.8,
+                        life: 0,
+                        maxLife: 28 + Math.random() * 20
+                    });
+                }
+            }
+
+            function renderFire() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                if (burning) {
+                    for (let i = 0; i < 6; i++) {
+                        spawnFlameParticle();
+                    }
+                }
+
+                ctx.globalCompositeOperation = 'lighter';
+
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const p = particles[i];
+                    p.life++;
+                    p.wobble += 0.22;
+                    p.x += p.vx + Math.sin(p.wobble) * 0.55;
+                    p.y += p.vy;
+                    p.radius *= 0.968;
+
+                    const progress = p.life / p.maxLife;
+                    if (progress >= 1 || p.radius < 1) {
+                        particles.splice(i, 1);
+                        continue;
+                    }
+
+                    let r = 255;
+                    let g = progress < 0.25 ? 245 : progress < 0.55 ? 165 : 55;
+                    let b = progress < 0.2 ? 170 : progress < 0.4 ? 30 : 0;
+                    let alpha = (1 - progress) * 0.55;
+
+                    const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius);
