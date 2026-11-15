@@ -136,7 +136,7 @@
             100% { transform: translateY(-110vh) translateX(35px) rotate(18deg) scale(1.1); opacity: 0; }
         }
 
-        /* --- AVATAR RESPONSIVO COM ANEL NEON --- */
+        /* --- AVATAR RESPONSIVO COM ANEL NEON E ZOOM NO ROSTO --- */
         .profile-wrapper {
             position: relative;
             width: clamp(114px, 32vw, 148px);
@@ -168,6 +168,8 @@
                 0 0 35px rgba(255, 85, 0, 0.75),
                 inset 0 0 18px rgba(255, 110, 20, 0.65);
             animation: ringPulse 3s ease-in-out infinite 1.2s;
+            z-index: 3;
+            pointer-events: none;
         }
 
         .profile-ring::after {
@@ -198,15 +200,23 @@
             50% { box-shadow: 0 0 22px #ff6a00, 0 0 48px rgba(255, 100, 0, 0.95), inset 0 0 22px rgba(255, 140, 40, 0.8); }
         }
 
-        .profile-img {
+        .profile-img-crop {
             width: calc(100% - 12px);
             height: calc(100% - 12px);
             border-radius: 50%;
-            object-fit: cover;
-            object-position: 48% 36%;
-            background-color: #140805;
+            overflow: hidden;
             position: relative;
             z-index: 2;
+            background-color: #140805;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: 47% 34%;
+            transform: scale(1.45);
+            transform-origin: 47% 34%;
         }
 
         .burst-spark {
@@ -357,7 +367,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Canvas interno onde as chamas físicas são desenhadas */
         .btn-fire-canvas {
             position: absolute;
             left: -4px;
@@ -413,7 +422,6 @@
             transform: translateY(-2px) scale(1.015);
         }
 
-        /* Letras incandescentes lambidas pelas chamas reais */
         .link-button:hover .btn-text,
         .link-button:active .btn-text,
         .link-button.is-burning .btn-text {
@@ -480,7 +488,9 @@
     <!-- Foto de Perfil + Anel Neon + Explosão de Faíscas -->
     <div class="profile-wrapper" id="profile-wrapper">
         <div class="profile-ring"></div>
-        <img src="perfil.jpg" alt="Mr. Angel" class="profile-img">
+        <div class="profile-img-crop">
+            <img src="perfil.jpg" alt="Mr. Angel" class="profile-img">
+        </div>
     </div>
 
     <div class="content-box">
@@ -624,177 +634,4 @@
                 spark.style.left = `${center + Math.cos(angle) * startRadius}px`;
                 spark.style.top = `${center + Math.sin(angle) * startRadius}px`;
                 spark.style.setProperty('--tx', `${Math.cos(angle) * (endRadius - startRadius)}px`);
-                spark.style.setProperty('--ty', `${Math.sin(angle) * (endRadius - startRadius)}px`);
-
-                profileWrapper.appendChild(spark);
-            }
-        }
-
-        // Simulação física de fogo realista dentro de cada botão no hover
-        function initButtonFire(button) {
-            const canvas = button.querySelector('.btn-fire-canvas');
-            const ctx = canvas.getContext('2d');
-            let particles = [];
-            let sparks = [];
-            let burning = false;
-            let animId = null;
-
-            function resizeCanvas() {
-                const rect = canvas.getBoundingClientRect();
-                if (rect.width > 0 && rect.height > 0) {
-                    canvas.width = rect.width;
-                    canvas.height = rect.height;
-                }
-            }
-
-            function spawnFlameParticle() {
-                const w = canvas.width;
-                const h = canvas.height;
-                // Concentra mais chamas na região central onde fica o texto
-                const spread = (Math.random() + Math.random()) / 2;
-                const x = w * (0.08 + spread * 0.84);
-                particles.push({
-                    x,
-                    y: h - 3,
-                    vx: (Math.random() - 0.5) * 0.85,
-                    vy: -(1.6 + Math.random() * 2.1),
-                    radius: 9 + Math.random() * 13,
-                    life: 0,
-                    maxLife: 24 + Math.random() * 18,
-                    wobble: Math.random() * Math.PI * 2
-                });
-
-                if (Math.random() > 0.62) {
-                    sparks.push({
-                        x: w * (0.12 + Math.random() * 0.76),
-                        y: h - 8,
-                        vx: (Math.random() - 0.5) * 1.4,
-                        vy: -(2.4 + Math.random() * 2.6),
-                        size: 1.2 + Math.random() * 1.8,
-                        life: 0,
-                        maxLife: 28 + Math.random() * 20
-                    });
-                }
-            }
-
-            function renderFire() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                if (burning) {
-                    for (let i = 0; i < 6; i++) {
-                        spawnFlameParticle();
-                    }
-                }
-
-                // Modo 'lighter' funde as partículas criando núcleo branco-amarelado realista
-                ctx.globalCompositeOperation = 'lighter';
-
-                for (let i = particles.length - 1; i >= 0; i--) {
-                    const p = particles[i];
-                    p.life++;
-                    p.wobble += 0.22;
-                    p.x += p.vx + Math.sin(p.wobble) * 0.55;
-                    p.y += p.vy;
-                    p.radius *= 0.968;
-
-                    const progress = p.life / p.maxLife;
-                    if (progress >= 1 || p.radius < 1) {
-                        particles.splice(i, 1);
-                        continue;
-                    }
-
-                    // Transição térmica real: branco -> amarelo -> laranja -> vermelho escuro
-                    let r = 255;
-                    let g = progress < 0.25 ? 245 : progress < 0.55 ? 165 : 55;
-                    let b = progress < 0.2 ? 170 : progress < 0.4 ? 30 : 0;
-                    let alpha = (1 - progress) * 0.55;
-
-                    const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius);
-                    grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${alpha})`);
-                    grad.addColorStop(0.55, `rgba(255, ${Math.max(30, g - 60)}, 0, ${alpha * 0.65})`);
-                    grad.addColorStop(1, 'rgba(180, 15, 0, 0)');
-
-                    ctx.fillStyle = grad;
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-
-                // Fagulhas incandescentes subindo
-                for (let i = sparks.length - 1; i >= 0; i--) {
-                    const s = sparks[i];
-                    s.life++;
-                    s.x += s.vx + Math.sin(s.life * 0.3) * 0.4;
-                    s.y += s.vy;
-
-                    const progress = s.life / s.maxLife;
-                    if (progress >= 1) {
-                        sparks.splice(i, 1);
-                        continue;
-                    }
-
-                    ctx.fillStyle = `rgba(255, ${Math.round(230 - progress * 140)}, 80, ${1 - progress})`;
-                    ctx.beginPath();
-                    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-
-                ctx.globalCompositeOperation = 'source-over';
-
-                if (burning || particles.length > 0 || sparks.length > 0) {
-                    animId = requestAnimationFrame(renderFire);
-                } else {
-                    animId = null;
-                }
-            }
-
-            function startBurn() {
-                resizeCanvas();
-                burning = true;
-                button.classList.add('is-burning');
-                if (!animId) {
-                    renderFire();
-                }
-            }
-
-            function stopBurn() {
-                burning = false;
-                button.classList.remove('is-burning');
-            }
-
-            button.addEventListener('mouseenter', startBurn);
-            button.addEventListener('mouseleave', stopBurn);
-            button.addEventListener('touchstart', startBurn, { passive: true });
-            button.addEventListener('touchend', stopBurn, { passive: true });
-            button.addEventListener('touchcancel', stopBurn, { passive: true });
-        }
-
-        function startExperience(e) {
-            if (hasEntered) return;
-            if (e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-            hasEntered = true;
-
-            introScreen.style.opacity = '0';
-            setTimeout(() => {
-                introScreen.style.display = 'none';
-            }, 600);
-
-            document.body.classList.add('start');
-            createEmbers();
-
-            setTimeout(() => {
-                document.body.classList.add('links-ready');
-            }, 850);
-        }
-
-        createRingBurst();
-        linkButtons.forEach(initButtonFire);
-
-        introScreen.addEventListener('touchstart', startExperience, { passive: false });
-        introScreen.addEventListener('click', startExperience);
-    </script>
-</body>
-</html>
+                spark.style.
