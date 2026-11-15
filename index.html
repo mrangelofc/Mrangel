@@ -318,12 +318,17 @@
             animation: fadeSlideUp 0.7s ease-out 1.4s forwards;
         }
 
-        /* --- BOTÕES COM TEXTO PEGANDO FOGO NO HOVER --- */
+        /* --- BOTÕES COM FOGO REAL EM CANVAS NO HOVER --- */
         .links-container {
             width: 100%;
             display: flex;
             flex-direction: column;
             gap: clamp(12px, 2.2vh, 17px);
+            pointer-events: none;
+        }
+
+        .links-ready .links-container {
+            pointer-events: auto;
         }
 
         .link-button {
@@ -333,7 +338,7 @@
             justify-content: center;
             width: 100%;
             padding: clamp(15px, 3.8vw, 19px) clamp(44px, 11vw, 54px);
-            background: rgba(18, 9, 5, 0.58);
+            background: rgba(18, 9, 5, 0.64);
             backdrop-filter: blur(4px);
             color: #ffffff;
             text-decoration: none;
@@ -348,13 +353,33 @@
                 inset 0 0 10px rgba(255, 85, 0, 0.22);
             transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
             opacity: 0;
+            overflow: visible;
             -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Canvas interno onde as chamas físicas são desenhadas */
+        .btn-fire-canvas {
+            position: absolute;
+            left: -4px;
+            right: -4px;
+            bottom: -2px;
+            width: calc(100% + 8px);
+            height: calc(100% + 34px);
+            pointer-events: none;
+            z-index: 1;
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .link-button.is-burning .btn-fire-canvas {
+            opacity: 1;
         }
 
         .btn-text {
             position: relative;
-            z-index: 2;
-            transition: font-weight 0.2s ease, letter-spacing 0.25s ease;
+            z-index: 3;
+            transition: font-weight 0.2s ease, letter-spacing 0.25s ease, text-shadow 0.2s ease;
         }
 
         .link-icon {
@@ -366,6 +391,7 @@
             align-items: center;
             justify-content: center;
             color: #ffb35c;
+            z-index: 3;
             filter: drop-shadow(0 0 6px rgba(255, 110, 20, 0.85));
             transition: transform 0.25s ease, color 0.25s ease, filter 0.25s ease;
         }
@@ -375,63 +401,38 @@
             height: 100%;
         }
 
-        .link-button:hover, .link-button:active {
-            background: rgba(255, 75, 10, 0.22);
-            border-color: #ffcc66;
+        .link-button:hover,
+        .link-button:active,
+        .link-button.is-burning {
+            background: rgba(35, 10, 2, 0.82);
+            border-color: #ffae42;
             box-shadow:
-                0 0 24px rgba(255, 95, 15, 0.95),
-                inset 0 0 16px rgba(255, 80, 10, 0.5);
+                0 0 22px rgba(255, 85, 0, 0.95),
+                0 -6px 24px rgba(255, 110, 15, 0.55),
+                inset 0 -14px 24px rgba(255, 70, 0, 0.55);
             transform: translateY(-2px) scale(1.015);
         }
 
+        /* Letras incandescentes lambidas pelas chamas reais */
         .link-button:hover .btn-text,
-        .link-button:active .btn-text {
-            color: #fff8e6;
-            font-weight: 600;
+        .link-button:active .btn-text,
+        .link-button.is-burning .btn-text {
+            color: #fffdf5;
+            font-weight: 700;
             letter-spacing: 0.9px;
-            animation: textFireFlicker 0.45s infinite alternate ease-in-out;
-        }
-
-        @keyframes textFireFlicker {
-            0% {
-                text-shadow:
-                    0 -1px 3px #ffffff,
-                    0 -3px 7px #ffea75,
-                    -1px -6px 12px #ff9d1c,
-                    1px -10px 18px #ff4500,
-                    0 -14px 24px #b81400;
-            }
-            33% {
-                text-shadow:
-                    0 -1px 3px #ffffff,
-                    1px -4px 8px #ffe066,
-                    -2px -8px 14px #ff8400,
-                    2px -12px 20px #ff3300,
-                    -1px -16px 26px #a80e00;
-            }
-            66% {
-                text-shadow:
-                    0 -1px 3px #ffffff,
-                    -1px -3px 7px #fff08a,
-                    2px -7px 13px #ff9100,
-                    -1px -11px 19px #ff3c00,
-                    1px -15px 25px #c41800;
-            }
-            100% {
-                text-shadow:
-                    0 -1px 4px #ffffff,
-                    0 -5px 9px #ffda57,
-                    1px -9px 15px #ff7700,
-                    -2px -13px 22px #ff2a00,
-                    0 -18px 28px #9e0a00;
-            }
+            text-shadow:
+                0 0 4px #ffffff,
+                0 -2px 8px #ffe066,
+                0 -5px 14px #ff7b00,
+                0 -9px 20px #d92600;
         }
 
         .link-button:hover .link-icon,
-        .link-button:active .link-icon {
-            color: #fff2cc;
+        .link-button:active .link-icon,
+        .link-button.is-burning .link-icon {
+            color: #fff6d6;
             transform: scale(1.12);
-            filter: drop-shadow(0 -2px 6px #ffbe3d) drop-shadow(0 -5px 12px #ff4500);
+            filter: drop-shadow(0 0 6px #ffe066) drop-shadow(0 -3px 12px #ff4500);
         }
 
         @keyframes fadeSlideUp {
@@ -497,10 +498,11 @@
 
         <p class="subtitle">Acompanhe minhas histórias nas redes abaixo</p>
 
-        <!-- BOTÕES COM LOGOTIPO À ESQUERDA E TEXTO PEGANDO FOGO NO HOVER -->
+        <!-- BOTÕES COM FOGO REAL NO HOVER -->
         <div class="links-container">
             <!-- 1. Xvideos -->
             <a href="https://www.xvideos.com/channels/mrangel24" target="_blank" rel="noopener noreferrer" class="link-button">
+                <canvas class="btn-fire-canvas"></canvas>
                 <span class="link-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M3 6l6 12M9 6L3 18M13 6l4 12 4-12"/>
@@ -511,6 +513,7 @@
 
             <!-- 2. Privacy -->
             <a href="https://privacy.com.br/profile/MrAngelofc" target="_blank" rel="noopener noreferrer" class="link-button">
+                <canvas class="btn-fire-canvas"></canvas>
                 <span class="link-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="4" y="10" width="16" height="11" rx="3"/>
@@ -523,6 +526,7 @@
 
             <!-- 3. Instagram -->
             <a href="https://www.instagram.com/mr.4ngel/" target="_blank" rel="noopener noreferrer" class="link-button">
+                <canvas class="btn-fire-canvas"></canvas>
                 <span class="link-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="2.5" y="2.5" width="19" height="19" rx="5"/>
@@ -535,6 +539,7 @@
 
             <!-- 4. Twitter -->
             <a href="https://x.com/mr4ngell" target="_blank" rel="noopener noreferrer" class="link-button">
+                <canvas class="btn-fire-canvas"></canvas>
                 <span class="link-icon">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
@@ -545,6 +550,7 @@
 
             <!-- 5. Grupo do telegram -->
             <a href="https://t.me/+ptqfX8C_O284OGEx" target="_blank" rel="noopener noreferrer" class="link-button">
+                <canvas class="btn-fire-canvas"></canvas>
                 <span class="link-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21.5 3.5L2.5 10.8l6.8 2.4 2.6 6.8 3.6-4.4 4.8 3.6 1.2-15.7z"/>
@@ -556,6 +562,7 @@
 
             <!-- 6. Onlyfans -->
             <a href="https://onlyfans.com/mr.4ngell" target="_blank" rel="noopener noreferrer" class="link-button">
+                <canvas class="btn-fire-canvas"></canvas>
                 <span class="link-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="9"/>
@@ -568,6 +575,7 @@
 
             <!-- 7. Camera Prive -->
             <a href="https://models.cameraprive.com/br/mr-angel" target="_blank" rel="noopener noreferrer" class="link-button">
+                <canvas class="btn-fire-canvas"></canvas>
                 <span class="link-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="2.5" y="6.5" width="13.5" height="11" rx="2.5"/>
@@ -584,6 +592,7 @@
         const introScreen = document.getElementById('intro-screen');
         const embersContainer = document.getElementById('embers');
         const profileWrapper = document.getElementById('profile-wrapper');
+        const linkButtons = document.querySelectorAll('.link-button');
         let hasEntered = false;
 
         function createEmbers() {
@@ -621,23 +630,171 @@
             }
         }
 
-        function startExperience() {
+        // Simulação física de fogo realista dentro de cada botão no hover
+        function initButtonFire(button) {
+            const canvas = button.querySelector('.btn-fire-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let sparks = [];
+            let burning = false;
+            let animId = null;
+
+            function resizeCanvas() {
+                const rect = canvas.getBoundingClientRect();
+                if (rect.width > 0 && rect.height > 0) {
+                    canvas.width = rect.width;
+                    canvas.height = rect.height;
+                }
+            }
+
+            function spawnFlameParticle() {
+                const w = canvas.width;
+                const h = canvas.height;
+                // Concentra mais chamas na região central onde fica o texto
+                const spread = (Math.random() + Math.random()) / 2;
+                const x = w * (0.08 + spread * 0.84);
+                particles.push({
+                    x,
+                    y: h - 3,
+                    vx: (Math.random() - 0.5) * 0.85,
+                    vy: -(1.6 + Math.random() * 2.1),
+                    radius: 9 + Math.random() * 13,
+                    life: 0,
+                    maxLife: 24 + Math.random() * 18,
+                    wobble: Math.random() * Math.PI * 2
+                });
+
+                if (Math.random() > 0.62) {
+                    sparks.push({
+                        x: w * (0.12 + Math.random() * 0.76),
+                        y: h - 8,
+                        vx: (Math.random() - 0.5) * 1.4,
+                        vy: -(2.4 + Math.random() * 2.6),
+                        size: 1.2 + Math.random() * 1.8,
+                        life: 0,
+                        maxLife: 28 + Math.random() * 20
+                    });
+                }
+            }
+
+            function renderFire() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                if (burning) {
+                    for (let i = 0; i < 6; i++) {
+                        spawnFlameParticle();
+                    }
+                }
+
+                // Modo 'lighter' funde as partículas criando núcleo branco-amarelado realista
+                ctx.globalCompositeOperation = 'lighter';
+
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const p = particles[i];
+                    p.life++;
+                    p.wobble += 0.22;
+                    p.x += p.vx + Math.sin(p.wobble) * 0.55;
+                    p.y += p.vy;
+                    p.radius *= 0.968;
+
+                    const progress = p.life / p.maxLife;
+                    if (progress >= 1 || p.radius < 1) {
+                        particles.splice(i, 1);
+                        continue;
+                    }
+
+                    // Transição térmica real: branco -> amarelo -> laranja -> vermelho escuro
+                    let r = 255;
+                    let g = progress < 0.25 ? 245 : progress < 0.55 ? 165 : 55;
+                    let b = progress < 0.2 ? 170 : progress < 0.4 ? 30 : 0;
+                    let alpha = (1 - progress) * 0.55;
+
+                    const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius);
+                    grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${alpha})`);
+                    grad.addColorStop(0.55, `rgba(255, ${Math.max(30, g - 60)}, 0, ${alpha * 0.65})`);
+                    grad.addColorStop(1, 'rgba(180, 15, 0, 0)');
+
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                // Fagulhas incandescentes subindo
+                for (let i = sparks.length - 1; i >= 0; i--) {
+                    const s = sparks[i];
+                    s.life++;
+                    s.x += s.vx + Math.sin(s.life * 0.3) * 0.4;
+                    s.y += s.vy;
+
+                    const progress = s.life / s.maxLife;
+                    if (progress >= 1) {
+                        sparks.splice(i, 1);
+                        continue;
+                    }
+
+                    ctx.fillStyle = `rgba(255, ${Math.round(230 - progress * 140)}, 80, ${1 - progress})`;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                ctx.globalCompositeOperation = 'source-over';
+
+                if (burning || particles.length > 0 || sparks.length > 0) {
+                    animId = requestAnimationFrame(renderFire);
+                } else {
+                    animId = null;
+                }
+            }
+
+            function startBurn() {
+                resizeCanvas();
+                burning = true;
+                button.classList.add('is-burning');
+                if (!animId) {
+                    renderFire();
+                }
+            }
+
+            function stopBurn() {
+                burning = false;
+                button.classList.remove('is-burning');
+            }
+
+            button.addEventListener('mouseenter', startBurn);
+            button.addEventListener('mouseleave', stopBurn);
+            button.addEventListener('touchstart', startBurn, { passive: true });
+            button.addEventListener('touchend', stopBurn, { passive: true });
+            button.addEventListener('touchcancel', stopBurn, { passive: true });
+        }
+
+        function startExperience(e) {
             if (hasEntered) return;
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
             hasEntered = true;
 
             introScreen.style.opacity = '0';
-            introScreen.style.pointerEvents = 'none';
-            setTimeout(() => { introScreen.style.display = 'none'; }, 600);
+            setTimeout(() => {
+                introScreen.style.display = 'none';
+            }, 600);
 
             document.body.classList.add('start');
             createEmbers();
+
+            setTimeout(() => {
+                document.body.classList.add('links-ready');
+            }, 850);
         }
 
         createRingBurst();
+        linkButtons.forEach(initButtonFire);
 
-        ['pointerdown', 'touchstart', 'click'].forEach((evt) => {
-            introScreen.addEventListener(evt, startExperience, { passive: true });
-        });
+        introScreen.addEventListener('touchstart', startExperience, { passive: false });
+        introScreen.addEventListener('click', startExperience);
     </script>
 </body>
 </html>
