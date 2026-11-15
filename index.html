@@ -103,30 +103,72 @@
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes pulseGlow { 0% { box-shadow: 0 0 10px rgba(255, 120, 0, 0.4); } 50% { box-shadow: 0 0 30px rgba(255, 120, 0, 0.9), 0 0 15px #ff3c00; } 100% { box-shadow: 0 0 10px rgba(255, 120, 0, 0.4); } }
 
-        .profile-img, h1, p, .links-container {
-            z-index: 2; /* Mantém os elementos na frente do fogo/fumaça */
+        .profile-container, .content-box {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+        .content-box { width: 100%; max-width: 400px; }
 
         .profile-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; background-color: #000; border: 2px solid #ff9e3d; opacity: 0; }
-        h1 { font-size: 26px; margin-bottom: 5px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; color: #ffd79e; text-shadow: 0 0 5px #ff7b00, 0 0 15px #ff3c00; opacity: 0; }
-        p { font-size: 13px; color: #d1b49e; margin-bottom: 40px; text-align: center; letter-spacing: 2px; text-transform: uppercase; opacity: 0; }
+
+        /* Título com Auréola e Rabinho exatos do vídeo */
+        .logo-title {
+            position: relative;
+            font-size: 26px;
+            margin-bottom: 5px;
+            font-weight: 600;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: #ffd79e;
+            text-shadow: 0 0 5px #ff7b00, 0 0 15px #ff3c00;
+            opacity: 0;
+            display: inline-block;
+        }
+
+        /* Auréola em cima da letra A */
+        .logo-title::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 68%;
+            width: 18px;
+            height: 7px;
+            border: 2px solid #ff9e3d;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #ff3c00;
+        }
+
+        /* Rabinho/Chifre na lateral direita */
+        .logo-title::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            right: -12px;
+            width: 10px;
+            height: 10px;
+            border-right: 2px solid #ff3c00;
+            border-bottom: 2px solid #ff3c00;
+            transform: rotate(45deg);
+            box-shadow: 2px 2px 6px rgba(255, 60, 0, 0.6);
+        }
+
+        p { font-size: 13px; color: #d1b49e; margin-bottom: 35px; text-align: center; letter-spacing: 2px; text-transform: uppercase; opacity: 0; }
         
-        .links-container { width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 18px; }
+        .links-container { width: 100%; display: flex; flex-direction: column; gap: 18px; }
         .link-button { display: block; width: 100%; padding: 16px 20px; background-color: rgba(20, 10, 5, 0.65); color: #ffecd2; text-decoration: none; text-align: center; border-radius: 8px; font-size: 14px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; transition: all 0.3s ease; border: 1px solid rgba(255, 120, 0, 0.4); box-shadow: 0 0 10px rgba(255, 60, 0, 0.1); opacity: 0; }
         .link-button:hover { background-color: rgba(255, 120, 0, 0.2); border-color: #ff9e3d; color: #ffffff; box-shadow: 0 0 25px rgba(255, 120, 0, 0.7); transform: translateY(-4px) scale(1.02); }
         
         .start .profile-img { animation: fadeInDown 0.8s ease-out forwards, pulseGlow 3s infinite 0.8s; }
-        .start h1 { animation: fadeInUp 0.8s ease-out 0.2s forwards; }
+        .start .logo-title { animation: fadeInUp 0.8s ease-out 0.2s forwards; }
         .start p { animation: fadeInUp 0.8s ease-out 0.4s forwards; }
         .start .link-button { animation: fadeInUp 0.6s ease-out forwards; }
         .start .link-button:nth-child(1) { animation-delay: 0.60s; } 
         .start .link-button:nth-child(2) { animation-delay: 0.75s; } 
         .start .link-button:nth-child(3) { animation-delay: 0.90s; } 
         .start .link-button:nth-child(4) { animation-delay: 1.05s; }
-        .start .link-button:nth-child(5) { animation-delay: 1.20s; }
-        .start .link-button:nth-child(6) { animation-delay: 1.35s; }
-        .start .link-button:nth-child(7) { animation-delay: 1.50s; }
-        .start .link-button:nth-child(8) { animation-delay: 1.65s; }
     </style>
 </head>
 <body>
@@ -138,19 +180,21 @@
     </div>
 
     <audio id="sfx-abertura" src="abertura.mp3" preload="auto"></audio>
-    <img src="perfil.jpg" alt="Logo Mr. Angel" class="profile-img">
-    <h1>Mr. Angel</h1>
-    <p>IT Support | Video Editor</p>
     
-    <div class="links-container">
-        <a href="#" target="_blank" class="link-button">Privacy</a>
-        <a href="#" target="_blank" class="link-button">Xvideos</a>
-        <a href="#" target="_blank" class="link-button">Telegram</a>
-        <a href="#" target="_blank" class="link-button">Camera Prive</a>
-        <a href="#" target="_blank" class="link-button">Stripchat</a>
-        <a href="#" target="_blank" class="link-button">X Twitter</a>
-        <a href="#" target="_blank" class="link-button">Onlyfans</a>
-        <a href="#" target="_blank" class="link-button">Fatalfans</a>
+    <div class="profile-container">
+        <img src="perfil.jpg" alt="Logo Mr. Angel" class="profile-img">
+    </div>
+
+    <div class="content-box">
+        <h1 class="logo-title">MR. ANGEL</h1>
+        <p>IT Support | Video Editor</p>
+        
+        <div class="links-container">
+            <a href="#" target="_blank" class="link-button">Portfólio de Vídeos</a>
+            <a href="#" target="_blank" class="link-button">GitHub</a>
+            <a href="#" target="_blank" class="link-button">LinkedIn</a>
+            <a href="#" target="_blank" class="link-button">WhatsApp</a>
+        </div>
     </div>
 
     <script>
@@ -159,18 +203,17 @@
         const sparklesContainer = document.getElementById('sparkles');
 
         function createSparkles() {
-            // Aumentado para 45 partículas ativas subindo constantemente
             for (let i = 0; i < 45; i++) {
                 const sparkle = document.createElement('div');
                 sparkle.classList.add('sparkle');
                 
-                const size = Math.random() * 5 + 3; // Partículas maiores e mais brilhantes (3px a 8px)
+                const size = Math.random() * 5 + 3;
                 sparkle.style.width = `${size}px`;
                 sparkle.style.height = `${size}px`;
                 
                 sparkle.style.left = `${Math.random() * 100}%`;
                 
-                const duration = Math.random() * 2.5 + 1.5; // Velocidade dinâmica (1.5s a 4s)
+                const duration = Math.random() * 2.5 + 1.5;
                 const delay = Math.random() * 4; 
                 
                 sparkle.style.animationDuration = `${duration}s`;
