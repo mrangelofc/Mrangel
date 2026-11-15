@@ -232,7 +232,7 @@
             max-width: 420px;
         }
 
-        /* --- TÍTULO MR. ANGEL EM NEON --- */
+        /* --- TÍTULO MR. ANGEL EM NEON LIMPO --- */
         .title-wrapper {
             position: relative;
             display: inline-flex;
@@ -311,7 +311,7 @@
             animation: fadeSlideUp 0.7s ease-out 1.15s forwards;
         }
 
-        /* --- BOTÕES NEON LIMPOS --- */
+        /* --- BOTÕES COM FOGO REAL NO HOVER --- */
         .links-container {
             width: 100%;
             display: flex;
@@ -346,13 +346,32 @@
                 inset 0 0 10px rgba(255, 85, 0, 0.22);
             transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
             opacity: 0;
+            overflow: visible;
             -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-fire-canvas {
+            position: absolute;
+            left: -4px;
+            right: -4px;
+            bottom: -2px;
+            width: calc(100% + 8px);
+            height: calc(100% + 34px);
+            pointer-events: none;
+            z-index: 1;
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .link-button.is-burning .btn-fire-canvas {
+            opacity: 1;
         }
 
         .btn-text {
             position: relative;
-            z-index: 2;
-            transition: color 0.25s ease, text-shadow 0.25s ease;
+            z-index: 3;
+            transition: font-weight 0.2s ease, letter-spacing 0.25s ease, text-shadow 0.2s ease;
         }
 
         .link-icon {
@@ -364,7 +383,7 @@
             align-items: center;
             justify-content: center;
             color: #ffb35c;
-            z-index: 2;
+            z-index: 3;
             filter: drop-shadow(0 0 6px rgba(255, 110, 20, 0.85));
             transition: transform 0.25s ease, color 0.25s ease, filter 0.25s ease;
         }
@@ -375,26 +394,36 @@
         }
 
         .link-button:hover,
-        .link-button:active {
-            background: rgba(255, 85, 10, 0.2);
-            border-color: #ffbe66;
+        .link-button:active,
+        .link-button.is-burning {
+            background: rgba(35, 10, 2, 0.82);
+            border-color: #ffae42;
             box-shadow:
-                0 0 22px rgba(255, 95, 15, 0.85),
-                inset 0 0 14px rgba(255, 85, 10, 0.4);
+                0 0 22px rgba(255, 85, 0, 0.95),
+                0 -6px 24px rgba(255, 110, 15, 0.55),
+                inset 0 -14px 24px rgba(255, 70, 0, 0.55);
             transform: translateY(-2px) scale(1.015);
         }
 
         .link-button:hover .btn-text,
-        .link-button:active .btn-text {
-            color: #fff6e0;
-            text-shadow: 0 0 10px rgba(255, 140, 40, 0.85);
+        .link-button:active .btn-text,
+        .link-button.is-burning .btn-text {
+            color: #fffdf5;
+            font-weight: 700;
+            letter-spacing: 0.9px;
+            text-shadow:
+                0 0 4px #ffffff,
+                0 -2px 8px #ffe066,
+                0 -5px 14px #ff7b00,
+                0 -9px 20px #d92600;
         }
 
         .link-button:hover .link-icon,
-        .link-button:active .link-icon {
-            color: #ffe2a8;
-            transform: scale(1.1);
-            filter: drop-shadow(0 0 10px rgba(255, 150, 40, 0.95));
+        .link-button:active .link-icon,
+        .link-button.is-burning .link-icon {
+            color: #fff6d6;
+            transform: scale(1.12);
+            filter: drop-shadow(0 0 6px #ffe066) drop-shadow(0 -3px 12px #ff4500);
         }
 
         @keyframes fadeSlideUp {
@@ -427,7 +456,7 @@
 </head>
 <body>
 
-    <!-- Tela Inicial com ação direta inline impossível de travar -->
+    <!-- Tela Inicial com ação direta inline -->
     <div id="intro-screen" onclick="this.style.display='none'; document.body.classList.add('start'); setTimeout(function(){ document.body.classList.add('links-ready'); }, 800);">
         <span class="enter-btn">Tocar para Entrar</span>
     </div>
@@ -462,9 +491,11 @@
 
         <p class="subtitle">Acompanhe minhas histórias nas redes abaixo</p>
 
-        <!-- BOTÕES DE LINKS -->
+        <!-- BOTÕES COM FOGO REAL NO HOVER -->
         <div class="links-container">
+            <!-- 1. Xvideos -->
             <a href="https://www.xvideos.com/channels/mrangel24" target="_blank" rel="noopener noreferrer" class="link-button">
+                <canvas class="btn-fire-canvas"></canvas>
                 <span class="link-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M3 6l6 12M9 6L3 18M13 6l4 12 4-12"/>
@@ -473,7 +504,9 @@
                 <span class="btn-text">Xvideos</span>
             </a>
 
+            <!-- 2. Privacy -->
             <a href="https://privacy.com.br/profile/MrAngelofc" target="_blank" rel="noopener noreferrer" class="link-button">
+                <canvas class="btn-fire-canvas"></canvas>
                 <span class="link-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="4" y="10" width="16" height="11" rx="3"/>
@@ -484,7 +517,9 @@
                 <span class="btn-text">Privacy</span>
             </a>
 
+            <!-- 3. Instagram -->
             <a href="https://www.instagram.com/mr.4ngel/" target="_blank" rel="noopener noreferrer" class="link-button">
+                <canvas class="btn-fire-canvas"></canvas>
                 <span class="link-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="2.5" y="2.5" width="19" height="19" rx="5"/>
@@ -495,7 +530,9 @@
                 <span class="btn-text">Instagram</span>
             </a>
 
+            <!-- 4. Twitter -->
             <a href="https://x.com/mr4ngell" target="_blank" rel="noopener noreferrer" class="link-button">
+                <canvas class="btn-fire-canvas"></canvas>
                 <span class="link-icon">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
@@ -504,7 +541,9 @@
                 <span class="btn-text">Twitter</span>
             </a>
 
+            <!-- 5. Grupo do telegram -->
             <a href="https://t.me/+ptqfX8C_O284OGEx" target="_blank" rel="noopener noreferrer" class="link-button">
+                <canvas class="btn-fire-canvas"></canvas>
                 <span class="link-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21.5 3.5L2.5 10.8l6.8 2.4 2.6 6.8 3.6-4.4 4.8 3.6 1.2-15.7z"/>
@@ -514,7 +553,9 @@
                 <span class="btn-text">Grupo do telegram</span>
             </a>
 
+            <!-- 6. Onlyfans -->
             <a href="https://onlyfans.com/mr.4ngell" target="_blank" rel="noopener noreferrer" class="link-button">
+                <canvas class="btn-fire-canvas"></canvas>
                 <span class="link-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="9"/>
@@ -525,7 +566,9 @@
                 <span class="btn-text">Onlyfans</span>
             </a>
 
+            <!-- 7. Camera Prive -->
             <a href="https://models.cameraprive.com/br/mr-angel" target="_blank" rel="noopener noreferrer" class="link-button">
+                <canvas class="btn-fire-canvas"></canvas>
                 <span class="link-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="2.5" y="6.5" width="13.5" height="11" rx="2.5"/>
@@ -540,6 +583,7 @@
 
     <script>
         (function() {
+            // Brasas flutuando no fundo
             var embersContainer = document.getElementById('embers');
             if (embersContainer) {
                 var count = window.innerWidth < 480 ? 28 : 42;
@@ -553,6 +597,147 @@
                     ember.style.animationDelay = (Math.random() * 3) + 's';
                     embersContainer.appendChild(ember);
                 }
+            }
+
+            // Simulação física de fogo nos botões ao passar o mouse / pressionar
+            function initButtonFire(button) {
+                var canvas = button.querySelector('.btn-fire-canvas');
+                if (!canvas) return;
+                var ctx = canvas.getContext('2d');
+                var particles = [];
+                var sparks = [];
+                var burning = false;
+                var animId = null;
+
+                function resizeCanvas() {
+                    var rect = canvas.getBoundingClientRect();
+                    if (rect.width > 0 && rect.height > 0) {
+                        canvas.width = rect.width;
+                        canvas.height = rect.height;
+                    }
+                }
+
+                function spawnFlameParticle() {
+                    var w = canvas.width;
+                    var h = canvas.height;
+                    var spread = (Math.random() + Math.random()) / 2;
+                    var x = w * (0.08 + spread * 0.84);
+                    particles.push({
+                        x: x,
+                        y: h - 3,
+                        vx: (Math.random() - 0.5) * 0.85,
+                        vy: -(1.6 + Math.random() * 2.1),
+                        radius: 9 + Math.random() * 13,
+                        life: 0,
+                        maxLife: 24 + Math.random() * 18,
+                        wobble: Math.random() * Math.PI * 2
+                    });
+
+                    if (Math.random() > 0.62) {
+                        sparks.push({
+                            x: w * (0.12 + Math.random() * 0.76),
+                            y: h - 8,
+                            vx: (Math.random() - 0.5) * 1.4,
+                            vy: -(2.4 + Math.random() * 2.6),
+                            size: 1.2 + Math.random() * 1.8,
+                            life: 0,
+                            maxLife: 28 + Math.random() * 20
+                        });
+                    }
+                }
+
+                function renderFire() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    if (burning) {
+                        for (var i = 0; i < 6; i++) {
+                            spawnFlameParticle();
+                        }
+                    }
+
+                    ctx.globalCompositeOperation = 'lighter';
+
+                    for (var i = particles.length - 1; i >= 0; i--) {
+                        var p = particles[i];
+                        p.life++;
+                        p.wobble += 0.22;
+                        p.x += p.vx + Math.sin(p.wobble) * 0.55;
+                        p.y += p.vy;
+                        p.radius *= 0.968;
+
+                        var progress = p.life / p.maxLife;
+                        if (progress >= 1 || p.radius < 1) {
+                            particles.splice(i, 1);
+                            continue;
+                        }
+
+                        var r = 255;
+                        var g = progress < 0.25 ? 245 : progress < 0.55 ? 165 : 55;
+                        var b = progress < 0.2 ? 170 : progress < 0.4 ? 30 : 0;
+                        var alpha = (1 - progress) * 0.55;
+
+                        var grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius);
+                        grad.addColorStop(0, 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')');
+                        grad.addColorStop(0.55, 'rgba(255, ' + Math.max(30, g - 60) + ', 0, ' + (alpha * 0.65) + ')');
+                        grad.addColorStop(1, 'rgba(180, 15, 0, 0)');
+
+                        ctx.fillStyle = grad;
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+
+                    for (var j = sparks.length - 1; j >= 0; j--) {
+                        var s = sparks[j];
+                        s.life++;
+                        s.x += s.vx + Math.sin(s.life * 0.3) * 0.4;
+                        s.y += s.vy;
+
+                        var sProgress = s.life / s.maxLife;
+                        if (sProgress >= 1) {
+                            sparks.splice(j, 1);
+                            continue;
+                        }
+
+                        ctx.fillStyle = 'rgba(255, ' + Math.round(230 - sProgress * 140) + ', 80, ' + (1 - sProgress) + ')';
+                        ctx.beginPath();
+                        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+
+                    ctx.globalCompositeOperation = 'source-over';
+
+                    if (burning || particles.length > 0 || sparks.length > 0) {
+                        animId = requestAnimationFrame(renderFire);
+                    } else {
+                        animId = null;
+                    }
+                }
+
+                function startBurn() {
+                    resizeCanvas();
+                    burning = true;
+                    button.classList.add('is-burning');
+                    if (!animId) {
+                        renderFire();
+                    }
+                }
+
+                function stopBurn() {
+                    burning = false;
+                    button.classList.remove('is-burning');
+                }
+
+                button.addEventListener('mouseenter', startBurn);
+                button.addEventListener('mouseleave', stopBurn);
+                button.addEventListener('touchstart', startBurn, { passive: true });
+                button.addEventListener('touchend', stopBurn, { passive: true });
+                button.addEventListener('touchcancel', stopBurn, { passive: true });
+            }
+
+            var buttons = document.querySelectorAll('.link-button');
+            for (var k = 0; k < buttons.length; k++) {
+                initButtonFire(buttons[k]);
             }
         })();
     </script>
