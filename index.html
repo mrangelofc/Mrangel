@@ -493,7 +493,7 @@
             </svg>
         </div>
 
-        <p class="subtitle">Acompanhe minhas histórias abaixo</p>
+        <p class="subtitle">Acompanhe minhas histórias nas redes abaixo</p>
 
         <!-- BOTÕES COM LOGOTIPO À ESQUERDA E TEXTO PEGANDO FOGO NO HOVER -->
         <div class="links-container">
@@ -522,4 +522,110 @@
             <!-- 3. Instagram -->
             <a href="https://www.instagram.com/mr.4ngel/" target="_blank" rel="noopener noreferrer" class="link-button">
                 <span class="link-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2.5" y="2.5" width="19" height="19" rx="5"/>
+                        <circle cx="12" cy="12" r="4.2"/>
+                        <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/>
+                    </svg>
+                </span>
+                <span class="btn-text">Instagram</span>
+            </a>
+
+            <!-- 4. Twitter -->
+            <a href="https://x.com/mr4ngell" target="_blank" rel="noopener noreferrer" class="link-button">
+                <span class="link-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                </span>
+                <span class="btn-text">Twitter</span>
+            </a>
+
+            <!-- 5. Grupo do telegram -->
+            <a href="https://t.me/+ptqfX8C_O284OGEx" target="_blank" rel="noopener noreferrer" class="link-button">
+                <span class="link-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21.5 3.5L2.5 10.8l6.8 2.4 2.6 6.8 3.6-4.4 4.8 3.6 1.2-15.7z"/>
+                        <path d="M9.3 13.2L21.5 3.5"/>
+                    </svg>
+                </span>
+                <span class="btn-text">Grupo do telegram</span>
+            </a>
+
+            <!-- 6. Onlyfans -->
+            <a href="https://onlyfans.com/mr.4ngell" target="_blank" rel="noopener noreferrer" class="link-button">
+                <span class="link-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="9"/>
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M15.5 8.5L20 4"/>
+                    </svg>
+                </span>
+                <span class="btn-text">Onlyfans</span>
+            </a>
+
+            <!-- 7. Camera Prive -->
+            <a href="https://models.cameraprive.com/br/mr-angel" target="_blank" rel="noopener noreferrer" class="link-button">
+                <span class="link-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2.5" y="6.5" width="13.5" height="11" rx="2.5"/>
+                        <path d="M16 10.5l5.5-3v9l-5.5-3v-3z"/>
+                        <circle cx="6.5" cy="10" r="1" fill="currentColor" stroke="none"/>
+                    </svg>
+                </span>
+                <span class="btn-text">Camera Prive</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const introScreen = document.getElementById('intro-screen');
+        const embersContainer = document.getElementById('embers');
+        const profileWrapper = document.getElementById('profile-wrapper');
+
+        function createEmbers() {
+            const count = window.innerWidth < 480 ? 28 : 42;
+            for (let i = 0; i < count; i++) {
+                const ember = document.createElement('div');
+                ember.classList.add('ember');
+                ember.style.left = `${Math.random() * 100}%`;
+                ember.style.height = `${Math.random() * 10 + 6}px`;
+                ember.style.width = `${Math.random() * 2 + 2}px`;
+                ember.style.animationDuration = `${Math.random() * 3 + 2.2}s`;
+                ember.style.animationDelay = `${Math.random() * 3}s`;
+                embersContainer.appendChild(ember);
+            }
+        }
+
+        function createRingBurst() {
+            const size = profileWrapper.offsetWidth || 132;
+            const center = size / 2;
+            const startRadius = center - 2;
+            const totalSparks = 28;
+
+            for (let i = 0; i < totalSparks; i++) {
+                const spark = document.createElement('div');
+                spark.classList.add('burst-spark');
+                const angle = (i / totalSparks) * Math.PI * 2;
+                const endRadius = startRadius + 20 + Math.random() * 24;
+
+                spark.style.left = `${center + Math.cos(angle) * startRadius}px`;
+                spark.style.top = `${center + Math.sin(angle) * startRadius}px`;
+                spark.style.setProperty('--tx', `${Math.cos(angle) * (endRadius - startRadius)}px`);
+                spark.style.setProperty('--ty', `${Math.sin(angle) * (endRadius - startRadius)}px`);
+
+                profileWrapper.appendChild(spark);
+            }
+        }
+
+        createRingBurst();
+
+        introScreen.addEventListener('click', () => {
+            introScreen.style.opacity = '0';
+            setTimeout(() => { introScreen.style.display = 'none'; }, 600);
+            document.body.classList.add('start');
+            createEmbers();
+        });
+    </script>
+</body>
+</html>
