@@ -20,12 +20,13 @@
             position: relative;
         }
 
-        /* --- TELA INICIAL --- */
+        /* --- TELA INICIAL COM PULSO DE BATIMENTO CARDÍACO --- */
         #intro-screen {
             position: fixed;
             inset: 0;
             background: radial-gradient(circle at center, #1c0904 0%, #050202 100%);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 9999;
@@ -46,13 +47,18 @@
             background: rgba(255, 90, 0, 0.12);
             box-shadow: 0 0 25px rgba(255, 90, 0, 0.45), inset 0 0 15px rgba(255, 90, 0, 0.25);
             text-shadow: 0 0 10px #ff5500;
-            animation: pulseEnter 1.6s infinite ease-in-out;
+            animation: heartbeatPulse 1.15s infinite ease-in-out;
             text-align: center;
+            user-select: none;
         }
 
-        @keyframes pulseEnter {
+        /* Animação sincronizada com o "tum-tum" do coração */
+        @keyframes heartbeatPulse {
             0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 90, 0, 0.4); }
-            50% { transform: scale(1.05); box-shadow: 0 0 38px rgba(255, 110, 0, 0.85), inset 0 0 20px rgba(255, 110, 0, 0.4); }
+            14% { transform: scale(1.07); box-shadow: 0 0 42px rgba(255, 80, 0, 0.9), inset 0 0 20px rgba(255, 90, 0, 0.45); }
+            28% { transform: scale(1.01); box-shadow: 0 0 22px rgba(255, 90, 0, 0.45); }
+            42% { transform: scale(1.05); box-shadow: 0 0 36px rgba(255, 80, 0, 0.8), inset 0 0 18px rgba(255, 90, 0, 0.35); }
+            70% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 90, 0, 0.4); }
         }
 
         /* --- FUMAÇA VOLUMÉTRICA DE FUNDO --- */
@@ -386,7 +392,7 @@
 
     <!-- Tela Inicial -->
     <div id="intro-screen">
-        <div class="enter-btn">Tocar para Entrar</div>
+        <div class="enter-btn" id="enter-btn">Tocar para Entrar</div>
     </div>
 
     <!-- Camadas de Fumaça Realista -->
@@ -502,8 +508,75 @@
 
     <script>
         const introScreen = document.getElementById('intro-screen');
+        const enterBtn = document.getElementById('enter-btn');
         const embersContainer = document.getElementById('embers');
         const profileWrapper = document.getElementById('profile-wrapper');
+
+        let hbCtx = null;
+        let hbInterval = null;
+        let hbActive = false;
+        let hasEntered = false;
+
+        function playSingleThump(time, startFreq, endFreq, peakGain, duration) {
+            if (!hbCtx || hasEntered) return;
+            const osc = hbCtx.createOscillator();
+            const gain = hbCtx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(startFreq, time);
+            osc.frequency.exponentialRampToValueAtTime(endFreq, time + duration);
+
+            gain.gain.setValueAtTime(0.001, time);
+            gain.gain.linearRampToValueAtTime(peakGain, time + 0.025);
+            gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
+
+            osc.connect(gain);
+            gain.connect(hbCtx.destination);
+
+            osc.start(time);
+            osc.stop(time + duration + 0.02);
+        }
+
+        function triggerHeartbeatCycle() {
+            if (!hbCtx || hasEntered) return;
+            const now = hbCtx.currentTime;
+            // Primeiro batimento ("TUM" mais grave e forte)
+            playSingleThump(now, 88, 36, 0.55, 0.24);
+            // Segundo batimento ("tum" logo em seguida)
+            playSingleThump(now + 0.27, 74, 34, 0.38, 0.20);
+        }
+
+        function startHeartbeat() {
+            if (hbActive || hasEntered) return;
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (!AudioCtx) return;
+
+            if (!hbCtx) {
+                hbCtx = new AudioCtx();
+            }
+            if (hbCtx.state === 'suspended') {
+                hbCtx.resume().catch(() => {});
+            }
+
+            if (hbCtx.state === 'running') {
+                hbActive = true;
+                triggerHeartbeatCycle();
+                hbInterval = setInterval(triggerHeartbeatCycle, 1150);
+            }
+        }
+
+        function stopHeartbeat() {
+            hasEntered = true;
+            hbActive = false;
+            if (hbInterval) {
+                clearInterval(hbInterval);
+                hbInterval = null;
+            }
+            if (hbCtx) {
+                hbCtx.close().catch(() => {});
+                hbCtx = null;
+            }
+        }
 
         function createEmbers() {
             for (let i = 0; i < 38; i++) {
@@ -538,7 +611,21 @@
 
         createRingBurst();
 
-        introScreen.addEventListener('click', () => {
+        // Tenta iniciar imediatamente ao carregar a página
+        window.addEventListener('load', startHeartbeat);
+
+        // Desbloqueia imediatamente se a pessoa tocar no fundo da tela inicial
+        introScreen.addEventListener('pointerdown', (e) => {
+            if (e.target !== enterBtn) {
+                startHeartbeat();
+            }
+        });
+
+        // Ao clicar no botão "Tocar para Entrar", encerra o batimento e abre o site
+        enterBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            stopHeartbeat();
+
             introScreen.style.opacity = '0';
             setTimeout(() => { introScreen.style.display = 'none'; }, 600);
             document.body.classList.add('start');
