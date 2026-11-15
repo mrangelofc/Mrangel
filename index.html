@@ -20,7 +20,7 @@
             position: relative;
         }
 
-        /* --- TELA INICIAL (MAIOR E MAIS VISÍVEL) --- */
+        /* --- TELA INICIAL --- */
         #intro-screen {
             position: fixed;
             inset: 0;
@@ -65,9 +65,7 @@
             transition: opacity 1.2s ease;
         }
 
-        .start .smoke-layer {
-            opacity: 1;
-        }
+        .start .smoke-layer { opacity: 1; }
 
         .smoke-ambient {
             background:
@@ -258,15 +256,10 @@
         }
 
         @keyframes titleNeonPulse {
-            0%, 100% {
-                filter: drop-shadow(0 0 6px rgba(255, 75, 0, 0.55)) drop-shadow(0 0 14px rgba(255, 110, 0, 0.35));
-            }
-            50% {
-                filter: drop-shadow(0 0 12px rgba(255, 115, 0, 0.95)) drop-shadow(0 0 26px rgba(255, 65, 0, 0.85));
-            }
+            0%, 100% { filter: drop-shadow(0 0 6px rgba(255, 75, 0, 0.55)) drop-shadow(0 0 14px rgba(255, 110, 0, 0.35)); }
+            50% { filter: drop-shadow(0 0 12px rgba(255, 115, 0, 0.95)) drop-shadow(0 0 26px rgba(255, 65, 0, 0.85)); }
         }
 
-        /* Auréola inclinada acima do "MR" pulsando */
         .halo-svg {
             position: absolute;
             top: -13px;
@@ -279,15 +272,10 @@
         }
 
         @keyframes haloNeonPulse {
-            0%, 100% {
-                filter: drop-shadow(0 0 5px rgba(255, 150, 50, 0.6)) drop-shadow(0 0 10px rgba(255, 90, 0, 0.4));
-            }
-            50% {
-                filter: drop-shadow(0 0 10px rgba(255, 200, 90, 1)) drop-shadow(0 0 22px rgba(255, 110, 0, 0.9));
-            }
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 150, 50, 0.6)) drop-shadow(0 0 10px rgba(255, 90, 0, 0.4)); }
+            50% { filter: drop-shadow(0 0 10px rgba(255, 200, 90, 1)) drop-shadow(0 0 22px rgba(255, 110, 0, 0.9)); }
         }
 
-        /* Cauda de diabinho saindo do "L" pulsando */
         .tail-svg {
             position: absolute;
             right: -24px;
@@ -299,12 +287,8 @@
         }
 
         @keyframes tailNeonPulse {
-            0%, 100% {
-                filter: drop-shadow(0 0 5px rgba(255, 60, 0, 0.6)) drop-shadow(0 0 10px rgba(255, 40, 0, 0.4));
-            }
-            50% {
-                filter: drop-shadow(0 0 10px rgba(255, 100, 30, 1)) drop-shadow(0 0 22px rgba(255, 50, 0, 0.9));
-            }
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 60, 0, 0.6)) drop-shadow(0 0 10px rgba(255, 40, 0, 0.4)); }
+            50% { filter: drop-shadow(0 0 10px rgba(255, 100, 30, 1)) drop-shadow(0 0 22px rgba(255, 50, 0, 0.9)); }
         }
 
         .subtitle {
@@ -321,7 +305,7 @@
             animation: fadeSlideUp 0.7s ease-out 1.4s forwards;
         }
 
-        /* --- BOTÕES NEON LARANJA EM CASCATA (7 BOTÕES) --- */
+        /* --- BOTÕES NEON LARANJA EM CASCATA --- */
         .links-container {
             width: 100%;
             display: flex;
@@ -417,13 +401,13 @@
 
         <!-- SEUS BOTÕES NA ORDEM EXATA (Substitua apenas COLE_SEU_LINK_AQUI) -->
         <div class="links-container">
-            <a href="COLE_SEU_LINK_AQUI" target="_blank" rel="noopener noreferrer" class="link-button">Xvideos</a>
-            <a href="COLE_SEU_LINK_AQUI" target="_blank" rel="noopener noreferrer" class="link-button">Privacy</a>
-            <a href="COLE_SEU_LINK_AQUI" target="_blank" rel="noopener noreferrer" class="link-button">Instagram</a>
-            <a href="COLE_SEU_LINK_AQUI" target="_blank" rel="noopener noreferrer" class="link-button">X (antigo twitter)</a>
-            <a href="COLE_SEU_LINK_AQUI" target="_blank" rel="noopener noreferrer" class="link-button">Grupo do telegram</a>
-            <a href="COLE_SEU_LINK_AQUI" target="_blank" rel="noopener noreferrer" class="link-button">Onlyfans</a>
-            <a href="COLE_SEU_LINK_AQUI" target="_blank" rel="noopener noreferrer" class="link-button">Camera Prive</a>
+            <a href="https://www.xvideos.com/channels/mrangel24" target="_blank" rel="noopener noreferrer" class="link-button">Xvideos</a>
+            <a href="https://privacy.com.br/profile/MrAngelofc" target="_blank" rel="noopener noreferrer" class="link-button">Privacy</a>
+            <a href="https://www.instagram.com/mr.4ngel/" target="_blank" rel="noopener noreferrer" class="link-button">Instagram</a>
+            <a href="https://x.com/mr4ngell" target="_blank" rel="noopener noreferrer" class="link-button">X (antigo twitter)</a>
+            <a href="https://t.me/+ptqfX8C_O284OGEx" target="_blank" rel="noopener noreferrer" class="link-button">Grupo do telegram</a>
+            <a href="https://onlyfans.com/mr.4ngell" target="_blank" rel="noopener noreferrer" class="link-button">Onlyfans</a>
+            <a href="https://models.cameraprive.com/br/mr-angel" target="_blank" rel="noopener noreferrer" class="link-button">Camera Prive</a>
         </div>
     </div>
 
@@ -464,10 +448,48 @@
             }
         }
 
+        // Gerador nativo de som de chamas e brasa crepitando em loop contínuo
+        function startFireSound() {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (!AudioCtx) return;
+
+            const ctx = new AudioCtx();
+            const bufferSize = ctx.sampleRate * 4;
+            const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+            const data = buffer.getChannelData(0);
+
+            let lastOut = 0.0;
+            for (let i = 0; i < bufferSize; i++) {
+                const white = Math.random() * 2 - 1;
+                const rumble = (lastOut + (0.03 * white)) / 1.03;
+                lastOut = rumble;
+                const crackle = Math.random() > 0.9965 ? (Math.random() * 2 - 1) * 0.55 : 0;
+                data[i] = rumble * 2.2 + crackle;
+            }
+
+            const noise = ctx.createBufferSource();
+            noise.buffer = buffer;
+            noise.loop = true;
+
+            const filter = ctx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = 520;
+
+            const gain = ctx.createGain();
+            gain.gain.value = 0.18; // Ajuste aqui se quiser mais alto (ex: 0.30) ou mais baixo (ex: 0.10)
+
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(ctx.destination);
+            noise.start();
+        }
+
         createRingBurst();
 
         introScreen.addEventListener('click', () => {
             somAbertura.play().catch(() => {});
+            startFireSound();
+
             introScreen.style.opacity = '0';
             setTimeout(() => { introScreen.style.display = 'none'; }, 600);
             document.body.classList.add('start');
