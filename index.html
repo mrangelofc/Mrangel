@@ -14,15 +14,8 @@
             100% { background-position: 0% 50%; } 
         }
 
-        /* Animação das fagulhas/brasas subindo */
-        @keyframes riseEmbers {
-            0% { transform: translateY(0px) scale(0.8); opacity: 0; }
-            50% { opacity: 0.8; }
-            100% { transform: translateY(-100vh) scale(1.2); opacity: 0; }
-        }
-        
         body { 
-            background: linear-gradient(-45deg, #150505, #260a08, #1a0a05, #050505); 
+            background: linear-gradient(-45deg, #150505, #3d1412, #1a0a05, #050505); 
             background-size: 400% 400%; 
             animation: bgShift 15s ease infinite; 
             color: #ffffff; 
@@ -35,24 +28,7 @@
             position: relative;
         }
 
-        /* Efeito de Fagulhas Flutuantes de Fundo */
-        .embers {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: 1;
-        }
-        .ember {
-            position: absolute;
-            bottom: -20px;
-            background: #ff6600;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #ff3c00, 0 0 15px #ff9e3d;
-            animation: riseEmbers 4s infinite ease-in;
-        }
-
-        /* --- TELA DE ENTRADA --- */
+        /* Tela de Introdução (Tocar para Entrar) */
         #intro-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -64,7 +40,6 @@
             transition: opacity 0.6s ease;
             cursor: pointer;
         }
-        
         .enter-text {
             font-size: 16px;
             letter-spacing: 3px;
@@ -72,98 +47,146 @@
             color: #ff9e3d;
             animation: pulseText 1.5s infinite;
         }
+        @keyframes pulseText { 
+            0% { opacity: 0.4; text-shadow: 0 0 5px rgba(255, 60, 0, 0.2); } 
+            50% { opacity: 1; text-shadow: 0 0 15px #ff3c00, 0 0 25px #ff7b00; } 
+            100% { opacity: 0.4; text-shadow: 0 0 5px rgba(255, 60, 0, 0.2); } 
+        }
 
-        @keyframes pulseText { 0% { opacity: 0.4; } 50% { opacity: 1; text-shadow: 0 0 12px #ff3c00; } 100% { opacity: 0.4; } }
+        /* Camada de Névoa / Fumaça Profunda */
+        .smoke-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 90%, rgba(255, 69, 0, 0.15) 0%, rgba(10, 2, 2, 0.8) 70%);
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            z-index: 1;
+        }
+        .start .smoke-overlay {
+            opacity: 1;
+            animation: smokePulse 8s ease-in-out infinite alternate;
+        }
+        @keyframes smokePulse {
+            0% { transform: scale(1); opacity: 0.7; }
+            100% { transform: scale(1.08); opacity: 1; }
+        }
 
-        /* --- ANIMAÇÕES E ELEMENTOS VISUAIS --- */
+        /* Container de Partículas / Fagulhas de Fogo */
+        .sparkles-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+            display: none;
+        }
+        .start .sparkles-container {
+            display: block;
+        }
+        .sparkle {
+            position: absolute;
+            bottom: -30px;
+            background: radial-gradient(circle, #fff 0%, #ff9e3d 50%, #ff3c00 100%);
+            border-radius: 50%;
+            animation: riseUp linear infinite;
+            box-shadow: 0 0 10px #ff3c00, 0 0 20px #ff7b00;
+        }
+        @keyframes riseUp {
+            0% { transform: translateY(0) translateX(0) scale(0.5); opacity: 0; }
+            15% { opacity: 1; }
+            85% { opacity: 1; }
+            100% { transform: translateY(-110vh) translateX(40px) scale(1.2); opacity: 0; }
+        }
+
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes pulseGlow { 0% { box-shadow: 0 0 10px rgba(255, 120, 0, 0.4); } 50% { box-shadow: 0 0 25px rgba(255, 120, 0, 0.9), 0 0 12px #ff3c00; } 100% { box-shadow: 0 0 10px rgba(255, 120, 0, 0.4); } }
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 10px rgba(255, 120, 0, 0.4); } 50% { box-shadow: 0 0 30px rgba(255, 120, 0, 0.9), 0 0 15px #ff3c00; } 100% { box-shadow: 0 0 10px rgba(255, 120, 0, 0.4); } }
+
+        .profile-img, h1, p, .links-container {
+            z-index: 2; /* Mantém os elementos na frente do fogo/fumaça */
+        }
+
+        .profile-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; background-color: #000; border: 2px solid #ff9e3d; opacity: 0; }
+        h1 { font-size: 26px; margin-bottom: 5px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; color: #ffd79e; text-shadow: 0 0 5px #ff7b00, 0 0 15px #ff3c00; opacity: 0; }
+        p { font-size: 13px; color: #d1b49e; margin-bottom: 40px; text-align: center; letter-spacing: 2px; text-transform: uppercase; opacity: 0; }
         
-        .profile-container {
-            position: relative;
-            z-index: 2;
-            opacity: 0;
-        }
-
-        .profile-img { 
-            width: 120px; 
-            height: 120px; 
-            border-radius: 50%; 
-            object-fit: cover; 
-            margin-bottom: 20px; 
-            background-color: #000; 
-            border: 2px solid #ff9e3d; 
-        }
-
-        .content-box {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 400px;
-        }
-
-        /* Estilização exata do Título com a Auréola e o Rabinho do vídeo */
-        .logo-title {
-            position: relative;
-            font-size: 26px;
-            margin-bottom: 5px;
-            font-weight: 600;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            color: #ffd79e;
-            text-shadow: 0 0 6px #ff7b00, 0 0 18px #ff3c00;
-            opacity: 0;
-            display: inline-block;
-        }
-
-        /* Auréola em cima da letra A */
-        .logo-title::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: 68%;
-            width: 18px;
-            height: 7px;
-            border: 2px solid #ff9e3d;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #ff3c00;
-        }
-
-        /* Rabinho/Chifre na lateral direita */
-        .logo-title::after {
-            content: '';
-            position: absolute;
-            bottom: 4px;
-            right: -12px;
-            width: 10px;
-            height: 10px;
-            border-right: 2px solid #ff3c00;
-            border-bottom: 2px solid #ff3c00;
-            transform: rotate(45deg);
-            box-shadow: 2px 2px 6px rgba(255, 60, 0, 0.6);
-        }
-
-        p { font-size: 13px; color: #d1b49e; margin-bottom: 35px; text-align: center; letter-spacing: 2px; text-transform: uppercase; opacity: 0; }
+        .links-container { width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 18px; }
+        .link-button { display: block; width: 100%; padding: 16px 20px; background-color: rgba(20, 10, 5, 0.65); color: #ffecd2; text-decoration: none; text-align: center; border-radius: 8px; font-size: 14px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; transition: all 0.3s ease; border: 1px solid rgba(255, 120, 0, 0.4); box-shadow: 0 0 10px rgba(255, 60, 0, 0.1); opacity: 0; }
+        .link-button:hover { background-color: rgba(255, 120, 0, 0.2); border-color: #ff9e3d; color: #ffffff; box-shadow: 0 0 25px rgba(255, 120, 0, 0.7); transform: translateY(-4px) scale(1.02); }
         
-        .links-container { width: 100%; display: flex; flex-direction: column; gap: 16px; }
-        
-        .link-button { 
-            display: block; 
-            width: 100%; 
-            padding: 16px 20px; 
-            background-color: rgba(20, 10, 5, 0.65); 
-            color: #ffecd2; 
-            text-decoration: none; 
-            text-align: center; 
-            border-radius: 8px; 
-            font-size: 14px; 
-            font-weight: 600; 
-            letter-spacing: 1.5px; 
-            text-transform: uppercase; 
-            transition: all 0.3s ease; 
-            border: 1px solid rgba(255, 120, 0, 0.45); 
-            box-shadow: 0 0 10px rgba(255, 60, 0,
+        .start .profile-img { animation: fadeInDown 0.8s ease-out forwards, pulseGlow 3s infinite 0.8s; }
+        .start h1 { animation: fadeInUp 0.8s ease-out 0.2s forwards; }
+        .start p { animation: fadeInUp 0.8s ease-out 0.4s forwards; }
+        .start .link-button { animation: fadeInUp 0.6s ease-out forwards; }
+        .start .link-button:nth-child(1) { animation-delay: 0.60s; } 
+        .start .link-button:nth-child(2) { animation-delay: 0.75s; } 
+        .start .link-button:nth-child(3) { animation-delay: 0.90s; } 
+        .start .link-button:nth-child(4) { animation-delay: 1.05s; }
+        .start .link-button:nth-child(5) { animation-delay: 1.20s; }
+        .start .link-button:nth-child(6) { animation-delay: 1.35s; }
+        .start .link-button:nth-child(7) { animation-delay: 1.50s; }
+        .start .link-button:nth-child(8) { animation-delay: 1.65s; }
+    </style>
+</head>
+<body>
+    <div class="smoke-overlay"></div>
+    <div class="sparkles-container" id="sparkles"></div>
+
+    <div id="intro-screen">
+        <span class="enter-text">Tocar para Entrar</span>
+    </div>
+
+    <audio id="sfx-abertura" src="abertura.mp3" preload="auto"></audio>
+    <img src="perfil.jpg" alt="Logo Mr. Angel" class="profile-img">
+    <h1>Mr. Angel</h1>
+    <p>IT Support | Video Editor</p>
+    
+    <div class="links-container">
+        <a href="#" target="_blank" class="link-button">Privacy</a>
+        <a href="#" target="_blank" class="link-button">Xvideos</a>
+        <a href="#" target="_blank" class="link-button">Telegram</a>
+        <a href="#" target="_blank" class="link-button">Camera Prive</a>
+        <a href="#" target="_blank" class="link-button">Stripchat</a>
+        <a href="#" target="_blank" class="link-button">X Twitter</a>
+        <a href="#" target="_blank" class="link-button">Onlyfans</a>
+        <a href="#" target="_blank" class="link-button">Fatalfans</a>
+    </div>
+
+    <script>
+        const introScreen = document.getElementById('intro-screen');
+        const somAbertura = document.getElementById('sfx-abertura');
+        const sparklesContainer = document.getElementById('sparkles');
+
+        function createSparkles() {
+            // Aumentado para 45 partículas ativas subindo constantemente
+            for (let i = 0; i < 45; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.classList.add('sparkle');
+                
+                const size = Math.random() * 5 + 3; // Partículas maiores e mais brilhantes (3px a 8px)
+                sparkle.style.width = `${size}px`;
+                sparkle.style.height = `${size}px`;
+                
+                sparkle.style.left = `${Math.random() * 100}%`;
+                
+                const duration = Math.random() * 2.5 + 1.5; // Velocidade dinâmica (1.5s a 4s)
+                const delay = Math.random() * 4; 
+                
+                sparkle.style.animationDuration = `${duration}s`;
+                sparkle.style.animationDelay = `${delay}s`;
+                
+                sparklesContainer.appendChild(sparkle);
+            }
+        }
+
+        introScreen.addEventListener('click', () => {
+            somAbertura.play().catch(() => console.log("Áudio bloqueado."));
+            introScreen.style.opacity = '0';
+            setTimeout(() => { introScreen.style.display = 'none'; }, 600);
+            document.body.classList.add('start');
+            createSparkles();
+        });
+    </script>
+</body>
+</html>
