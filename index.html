@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Mr. Angel | Links</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -14,13 +14,15 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             min-height: 100vh;
-            padding: 45px 20px;
+            min-height: 100dvh;
+            padding: clamp(28px, 6vh, 60px) clamp(16px, 5vw, 32px);
             overflow-x: hidden;
             position: relative;
         }
 
-        /* --- TELA INICIAL --- */
+        /* --- TELA INICIAL RESPONSIVA --- */
         #intro-screen {
             position: fixed;
             inset: 0;
@@ -37,12 +39,12 @@
         }
 
         .enter-btn {
-            font-size: 20px;
+            font-size: clamp(15px, 4.5vw, 22px);
             font-weight: 700;
-            letter-spacing: 4px;
+            letter-spacing: clamp(2px, 0.8vw, 4px);
             text-transform: uppercase;
             color: #ffd79e;
-            padding: 20px 36px;
+            padding: clamp(16px, 4vw, 22px) clamp(24px, 7vw, 42px);
             border: 2px solid #ff7b00;
             border-radius: 12px;
             background: rgba(255, 90, 0, 0.12);
@@ -51,6 +53,7 @@
             animation: pulseEnter 1.6s infinite ease-in-out;
             text-align: center;
             user-select: none;
+            max-width: 90vw;
         }
 
         @keyframes pulseEnter {
@@ -129,12 +132,12 @@
             100% { transform: translateY(-110vh) translateX(35px) rotate(18deg) scale(1.1); opacity: 0; }
         }
 
-        /* --- AVATAR COM ANEL NEON E EXPLOSÃO DE FAÍSCAS --- */
+        /* --- AVATAR RESPONSIVO COM ANEL NEON --- */
         .profile-wrapper {
             position: relative;
-            width: 132px;
-            height: 132px;
-            margin-bottom: 22px;
+            width: clamp(114px, 32vw, 148px);
+            height: clamp(114px, 32vw, 148px);
+            margin-bottom: clamp(18px, 3vh, 26px);
             z-index: 3;
             opacity: 0;
             display: flex;
@@ -192,8 +195,8 @@
         }
 
         .profile-img {
-            width: 120px;
-            height: 120px;
+            width: calc(100% - 12px);
+            height: calc(100% - 12px);
             border-radius: 50%;
             object-fit: cover;
             object-position: 48% 36%;
@@ -214,4 +217,309 @@
         }
 
         .start .burst-spark {
-            animation:
+            animation: sparkBurst 1.3s ease-out 1.1s forwards;
+        }
+
+        @keyframes sparkBurst {
+            0% { opacity: 0; transform: translate(0, 0) scale(0.5); }
+            25% { opacity: 1; }
+            100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(1.2); }
+        }
+
+        /* --- CONTAINER PRINCIPAL ADAPTÁVEL --- */
+        .content-box {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .title-wrapper {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 8px;
+            opacity: 0;
+        }
+
+        .start .title-wrapper {
+            animation: fadeSlideUp 0.7s ease-out 1.1s forwards;
+        }
+
+        .logo-title {
+            font-size: clamp(23px, 6.8vw, 32px);
+            font-weight: 700;
+            letter-spacing: clamp(2px, 0.7vw, 3.5px);
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #ffe6b3 0%, #ffb35c 45%, #ff551a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 8px rgba(255, 85, 0, 0.65));
+            position: relative;
+            animation: titleNeonPulse 3s ease-in-out infinite 1.2s;
+            white-space: nowrap;
+        }
+
+        @keyframes titleNeonPulse {
+            0%, 100% { filter: drop-shadow(0 0 6px rgba(255, 75, 0, 0.55)) drop-shadow(0 0 14px rgba(255, 110, 0, 0.35)); }
+            50% { filter: drop-shadow(0 0 12px rgba(255, 115, 0, 0.95)) drop-shadow(0 0 26px rgba(255, 65, 0, 0.85)); }
+        }
+
+        .halo-svg {
+            position: absolute;
+            top: clamp(-14px, -3.5vw, -11px);
+            left: -4px;
+            width: clamp(38px, 10vw, 48px);
+            height: 16px;
+            transform: rotate(-8deg);
+            filter: drop-shadow(0 0 6px rgba(255, 160, 60, 0.7));
+            animation: haloNeonPulse 3s ease-in-out infinite 1.2s;
+        }
+
+        @keyframes haloNeonPulse {
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 150, 50, 0.6)) drop-shadow(0 0 10px rgba(255, 90, 0, 0.4)); }
+            50% { filter: drop-shadow(0 0 10px rgba(255, 200, 90, 1)) drop-shadow(0 0 22px rgba(255, 110, 0, 0.9)); }
+        }
+
+        .tail-svg {
+            position: absolute;
+            right: clamp(-24px, -6vw, -20px);
+            bottom: -4px;
+            width: clamp(26px, 7vw, 32px);
+            height: 22px;
+            filter: drop-shadow(0 0 6px rgba(255, 60, 0, 0.7));
+            animation: tailNeonPulse 3s ease-in-out infinite 1.2s;
+        }
+
+        @keyframes tailNeonPulse {
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 60, 0, 0.6)) drop-shadow(0 0 10px rgba(255, 40, 0, 0.4)); }
+            50% { filter: drop-shadow(0 0 10px rgba(255, 100, 30, 1)) drop-shadow(0 0 22px rgba(255, 50, 0, 0.9)); }
+        }
+
+        .subtitle {
+            font-size: clamp(12.5px, 3.6vw, 15px);
+            font-weight: 400;
+            color: #e2d5cc;
+            letter-spacing: 0.6px;
+            margin-bottom: clamp(24px, 4.5vh, 36px);
+            text-align: center;
+            opacity: 0;
+            padding: 0 8px;
+        }
+
+        .start .subtitle {
+            animation: fadeSlideUp 0.7s ease-out 1.4s forwards;
+        }
+
+        /* --- BOTÕES COM TEXTO PEGANDO FOGO NO HOVER --- */
+        .links-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(12px, 2.2vh, 17px);
+        }
+
+        .link-button {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: clamp(15px, 3.8vw, 19px) clamp(44px, 11vw, 54px);
+            background: rgba(18, 9, 5, 0.58);
+            backdrop-filter: blur(4px);
+            color: #ffffff;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 8px;
+            font-size: clamp(14px, 3.8vw, 16px);
+            font-weight: 500;
+            letter-spacing: 0.6px;
+            border: 1.5px solid #ff6a1a;
+            box-shadow:
+                0 0 12px rgba(255, 85, 0, 0.45),
+                inset 0 0 10px rgba(255, 85, 0, 0.22);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+            opacity: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-text {
+            position: relative;
+            z-index: 2;
+            transition: font-weight 0.2s ease, letter-spacing 0.25s ease;
+        }
+
+        .link-icon {
+            position: absolute;
+            left: clamp(14px, 4vw, 20px);
+            width: clamp(20px, 5vw, 23px);
+            height: clamp(20px, 5vw, 23px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffb35c;
+            filter: drop-shadow(0 0 6px rgba(255, 110, 20, 0.85));
+            transition: transform 0.25s ease, color 0.25s ease, filter 0.25s ease;
+        }
+
+        .link-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .link-button:hover, .link-button:active {
+            background: rgba(255, 75, 10, 0.22);
+            border-color: #ffcc66;
+            box-shadow:
+                0 0 24px rgba(255, 95, 15, 0.95),
+                inset 0 0 16px rgba(255, 80, 10, 0.5);
+            transform: translateY(-2px) scale(1.015);
+        }
+
+        /* Efeito de chamas vivas no texto ao passar o mouse */
+        .link-button:hover .btn-text,
+        .link-button:active .btn-text {
+            color: #fff8e6;
+            font-weight: 600;
+            letter-spacing: 0.9px;
+            animation: textFireFlicker 0.45s infinite alternate ease-in-out;
+        }
+
+        @keyframes textFireFlicker {
+            0% {
+                text-shadow:
+                    0 -1px 3px #ffffff,
+                    0 -3px 7px #ffea75,
+                    -1px -6px 12px #ff9d1c,
+                    1px -10px 18px #ff4500,
+                    0 -14px 24px #b81400;
+            }
+            33% {
+                text-shadow:
+                    0 -1px 3px #ffffff,
+                    1px -4px 8px #ffe066,
+                    -2px -8px 14px #ff8400,
+                    2px -12px 20px #ff3300,
+                    -1px -16px 26px #a80e00;
+            }
+            66% {
+                text-shadow:
+                    0 -1px 3px #ffffff,
+                    -1px -3px 7px #fff08a,
+                    2px -7px 13px #ff9100,
+                    -1px -11px 19px #ff3c00,
+                    1px -15px 25px #c41800;
+            }
+            100% {
+                text-shadow:
+                    0 -1px 4px #ffffff,
+                    0 -5px 9px #ffda57,
+                    1px -9px 15px #ff7700,
+                    -2px -13px 22px #ff2a00,
+                    0 -18px 28px #9e0a00;
+            }
+        }
+
+        .link-button:hover .link-icon,
+        .link-button:active .link-icon {
+            color: #fff2cc;
+            transform: scale(1.12);
+            filter: drop-shadow(0 -2px 6px #ffbe3d) drop-shadow(0 -5px 12px #ff4500);
+        }
+
+        @keyframes fadeSlideUp {
+            0% { opacity: 0; transform: translateY(28px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .start .link-button {
+            animation: fadeSlideUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .start .link-button:nth-child(1) { animation-delay: 1.7s; }
+        .start .link-button:nth-child(2) { animation-delay: 2.0s; }
+        .start .link-button:nth-child(3) { animation-delay: 2.3s; }
+        .start .link-button:nth-child(4) { animation-delay: 2.6s; }
+        .start .link-button:nth-child(5) { animation-delay: 2.9s; }
+        .start .link-button:nth-child(6) { animation-delay: 3.2s; }
+        .start .link-button:nth-child(7) { animation-delay: 3.5s; }
+
+        /* --- AJUSTE PARA TELAS GRANDES (TABLETS, NOTEBOOKS E DESKTOP) --- */
+        @media (min-width: 768px) {
+            .content-box {
+                max-width: 480px;
+            }
+            .link-button {
+                padding: 20px 56px;
+                border-radius: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Tela Inicial -->
+    <div id="intro-screen">
+        <div class="enter-btn" id="enter-btn">Tocar para Entrar</div>
+    </div>
+
+    <!-- Camadas de Fumaça Realista -->
+    <div class="smoke-layer smoke-ambient"></div>
+    <div class="smoke-layer smoke-wisps"></div>
+
+    <!-- Faíscas Subindo -->
+    <div class="embers-container" id="embers"></div>
+
+    <!-- Foto de Perfil + Anel Neon + Explosão de Faíscas -->
+    <div class="profile-wrapper" id="profile-wrapper">
+        <div class="profile-ring"></div>
+        <img src="perfil.jpg" alt="Mr. Angel" class="profile-img">
+    </div>
+
+    <div class="content-box">
+        <!-- Título com Auréola e Cauda SVG pulsando em neon -->
+        <div class="title-wrapper">
+            <svg class="halo-svg" viewBox="0 0 60 22" fill="none">
+                <ellipse cx="30" cy="11" rx="24" ry="6.5" stroke="#ffbe55" stroke-width="2.6"/>
+            </svg>
+            <h1 class="logo-title">MR. ANGEL</h1>
+            <svg class="tail-svg" viewBox="0 0 40 28" fill="none">
+                <path d="M2 16 C 12 24, 22 6, 32 14" stroke="#ff551a" stroke-width="2.6" stroke-linecap="round"/>
+                <polygon points="30,9 38,16 28,19" fill="#ff551a"/>
+            </svg>
+        </div>
+
+        <p class="subtitle">Acompanhe minhas histórias abaixo</p>
+
+        <!-- BOTÕES COM LOGOTIPO À ESQUERDA E TEXTO PEGANDO FOGO NO HOVER -->
+        <div class="links-container">
+            <!-- 1. Xvideos -->
+            <a href="https://www.xvideos.com/channels/mrangel24" target="_blank" rel="noopener noreferrer" class="link-button">
+                <span class="link-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 6l6 12M9 6L3 18M13 6l4 12 4-12"/>
+                    </svg>
+                </span>
+                <span class="btn-text">Xvideos</span>
+            </a>
+
+            <!-- 2. Privacy -->
+            <a href="https://privacy.com.br/profile/MrAngelofc" target="_blank" rel="noopener noreferrer" class="link-button">
+                <span class="link-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="10" width="16" height="11" rx="3"/>
+                        <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+                        <circle cx="12" cy="15.5" r="1.5" fill="currentColor"/>
+                    </svg>
+                </span>
+                <span class="btn-text">Privacy</span>
+            </a>
+
+            <!-- 3. Instagram -->
+            <a href="https://www.instagram.com/mr.4ngel/" target="_blank" rel="noopener noreferrer" class="link-button">
+                <span class="link-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke
