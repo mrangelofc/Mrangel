@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="google" content="notranslate">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Mr.Angel </title>
+    <title>Mr. Angel | Links</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
@@ -23,23 +23,23 @@
             position: relative;
         }
 
-        /* --- TELA INICIAL: 1 ÚNICO TOQUE --- */
+        /* --- TELA INICIAL --- */
         #intro-screen {
             position: fixed;
-            inset: 0;
-            width: 100vw;
-            height: 100vh;
-            height: 100dvh;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
             background: radial-gradient(circle at center, #1c0904 0%, #050202 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 99999;
-            transition: opacity 0.55s ease;
             cursor: pointer;
             padding: 20px;
-            touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -77,7 +77,7 @@
             transition: opacity 1.2s ease;
         }
 
-        .start .smoke-layer { opacity: 1; }
+        body.start .smoke-layer { opacity: 1; }
 
         .smoke-ambient {
             background:
@@ -118,7 +118,7 @@
             z-index: 2;
             display: none;
         }
-        .start .embers-container { display: block; }
+        body.start .embers-container { display: block; }
 
         .ember {
             position: absolute;
@@ -151,8 +151,8 @@
             align-items: center;
         }
 
-        .start .profile-wrapper {
-            animation: avatarReveal 0.9s ease-out 0.25s forwards;
+        body.start .profile-wrapper {
+            animation: avatarReveal 0.9s ease-out 0.2s forwards;
         }
 
         @keyframes avatarReveal {
@@ -186,7 +186,7 @@
             opacity: 0;
         }
 
-        .start .profile-ring::after {
+        body.start .profile-ring::after {
             animation: fireSweep 3.5s linear infinite 2.2s;
         }
 
@@ -221,27 +221,6 @@
             transform-origin: 47% 34%;
         }
 
-        .burst-spark {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background: #ffd27d;
-            box-shadow: 0 0 8px #ff5500, 0 0 14px #ff9e3d;
-            opacity: 0;
-            z-index: 1;
-        }
-
-        .start .burst-spark {
-            animation: sparkBurst 1.3s ease-out 1s forwards;
-        }
-
-        @keyframes sparkBurst {
-            0% { opacity: 0; transform: translate(0, 0) scale(0.5); }
-            25% { opacity: 1; }
-            100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(1.2); }
-        }
-
         /* --- CONTAINER PRINCIPAL ADAPTÁVEL --- */
         .content-box {
             position: relative;
@@ -263,8 +242,8 @@
             opacity: 0;
         }
 
-        .start .title-wrapper {
-            animation: fadeSlideUp 0.7s ease-out 0.95s forwards;
+        body.start .title-wrapper {
+            animation: fadeSlideUp 0.7s ease-out 0.85s forwards;
         }
 
         .logo-title {
@@ -328,8 +307,8 @@
             padding: 0 8px;
         }
 
-        .start .subtitle {
-            animation: fadeSlideUp 0.7s ease-out 1.25s forwards;
+        body.start .subtitle {
+            animation: fadeSlideUp 0.7s ease-out 1.15s forwards;
         }
 
         /* --- BOTÕES NEON LIMPOS --- */
@@ -341,7 +320,7 @@
             pointer-events: none;
         }
 
-        .links-ready .links-container {
+        body.links-ready .links-container {
             pointer-events: auto;
         }
 
@@ -423,17 +402,17 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        .start .link-button {
+        body.start .link-button {
             animation: fadeSlideUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
 
-        .start .link-button:nth-child(1) { animation-delay: 1.5s; }
-        .start .link-button:nth-child(2) { animation-delay: 1.8s; }
-        .start .link-button:nth-child(3) { animation-delay: 2.1s; }
-        .start .link-button:nth-child(4) { animation-delay: 2.4s; }
-        .start .link-button:nth-child(5) { animation-delay: 2.7s; }
-        .start .link-button:nth-child(6) { animation-delay: 3.0s; }
-        .start .link-button:nth-child(7) { animation-delay: 3.3s; }
+        body.start .link-button:nth-child(1) { animation-delay: 1.4s; }
+        body.start .link-button:nth-child(2) { animation-delay: 1.7s; }
+        body.start .link-button:nth-child(3) { animation-delay: 2.0s; }
+        body.start .link-button:nth-child(4) { animation-delay: 2.3s; }
+        body.start .link-button:nth-child(5) { animation-delay: 2.6s; }
+        body.start .link-button:nth-child(6) { animation-delay: 2.9s; }
+        body.start .link-button:nth-child(7) { animation-delay: 3.2s; }
 
         @media (min-width: 768px) {
             .content-box {
@@ -448,8 +427,8 @@
 </head>
 <body>
 
-    <!-- Tela Inicial: 1 único toque ou clique -->
-    <div id="intro-screen" role="button" tabindex="0">
+    <!-- Tela Inicial com ação direta inline impossível de travar -->
+    <div id="intro-screen" onclick="this.style.display='none'; document.body.classList.add('start'); setTimeout(function(){ document.body.classList.add('links-ready'); }, 800);">
         <span class="enter-btn">Tocar para Entrar</span>
     </div>
 
@@ -460,7 +439,7 @@
     <!-- Faíscas Subindo -->
     <div class="embers-container" id="embers"></div>
 
-    <!-- Foto de Perfil + Anel Neon + Explosão de Faíscas -->
+    <!-- Foto de Perfil + Anel Neon -->
     <div class="profile-wrapper" id="profile-wrapper">
         <div class="profile-ring"></div>
         <div class="profile-img-crop">
@@ -485,7 +464,6 @@
 
         <!-- BOTÕES DE LINKS -->
         <div class="links-container">
-            <!-- 1. Xvideos -->
             <a href="https://www.xvideos.com/channels/mrangel24" target="_blank" rel="noopener noreferrer" class="link-button">
                 <span class="link-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -495,7 +473,6 @@
                 <span class="btn-text">Xvideos</span>
             </a>
 
-            <!-- 2. Privacy -->
             <a href="https://privacy.com.br/profile/MrAngelofc" target="_blank" rel="noopener noreferrer" class="link-button">
                 <span class="link-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -507,7 +484,6 @@
                 <span class="btn-text">Privacy</span>
             </a>
 
-            <!-- 3. Instagram -->
             <a href="https://www.instagram.com/mr.4ngel/" target="_blank" rel="noopener noreferrer" class="link-button">
                 <span class="link-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -519,7 +495,6 @@
                 <span class="btn-text">Instagram</span>
             </a>
 
-            <!-- 4. Twitter -->
             <a href="https://x.com/mr4ngell" target="_blank" rel="noopener noreferrer" class="link-button">
                 <span class="link-icon">
                     <svg viewBox="0 0 24 24" fill="currentColor">
@@ -529,9 +504,57 @@
                 <span class="btn-text">Twitter</span>
             </a>
 
-            <!-- 5. Grupo do telegram -->
             <a href="https://t.me/+ptqfX8C_O284OGEx" target="_blank" rel="noopener noreferrer" class="link-button">
                 <span class="link-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21.5 3.5L2.5 10.8l6.8 2.4 2.6 6.8 3.6-4.4 4.8 3.6 1.2-15.7z"/>
-                        <path d="M9.3 13.2L21.5
+                        <path d="M9.3 13.2L21.5 3.5"/>
+                    </svg>
+                </span>
+                <span class="btn-text">Grupo do telegram</span>
+            </a>
+
+            <a href="https://onlyfans.com/mr.4ngell" target="_blank" rel="noopener noreferrer" class="link-button">
+                <span class="link-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="9"/>
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M15.5 8.5L20 4"/>
+                    </svg>
+                </span>
+                <span class="btn-text">Onlyfans</span>
+            </a>
+
+            <a href="https://models.cameraprive.com/br/mr-angel" target="_blank" rel="noopener noreferrer" class="link-button">
+                <span class="link-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2.5" y="6.5" width="13.5" height="11" rx="2.5"/>
+                        <path d="M16 10.5l5.5-3v9l-5.5-3v-3z"/>
+                        <circle cx="6.5" cy="10" r="1" fill="currentColor" stroke="none"/>
+                    </svg>
+                </span>
+                <span class="btn-text">Camera Prive</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            var embersContainer = document.getElementById('embers');
+            if (embersContainer) {
+                var count = window.innerWidth < 480 ? 28 : 42;
+                for (var i = 0; i < count; i++) {
+                    var ember = document.createElement('div');
+                    ember.className = 'ember';
+                    ember.style.left = (Math.random() * 100) + '%';
+                    ember.style.height = (Math.random() * 10 + 6) + 'px';
+                    ember.style.width = (Math.random() * 2 + 2) + 'px';
+                    ember.style.animationDuration = (Math.random() * 3 + 2.2) + 's';
+                    ember.style.animationDelay = (Math.random() * 3) + 's';
+                    embersContainer.appendChild(ember);
+                }
+            }
+        })();
+    </script>
+</body>
+</html>
