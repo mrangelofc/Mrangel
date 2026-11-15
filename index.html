@@ -26,6 +26,8 @@
         #intro-screen {
             position: fixed;
             inset: 0;
+            width: 100%;
+            height: 100%;
             background: radial-gradient(circle at center, #1c0904 0%, #050202 100%);
             display: flex;
             flex-direction: column;
@@ -35,6 +37,7 @@
             transition: opacity 0.6s ease;
             cursor: pointer;
             padding: 20px;
+            touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -53,6 +56,7 @@
             animation: pulseEnter 1.6s infinite ease-in-out;
             text-align: center;
             user-select: none;
+            pointer-events: none;
             max-width: 90vw;
         }
 
@@ -380,7 +384,6 @@
             transform: translateY(-2px) scale(1.015);
         }
 
-        /* Efeito de chamas vivas no texto ao passar o mouse */
         .link-button:hover .btn-text,
         .link-button:active .btn-text {
             color: #fff8e6;
@@ -448,7 +451,6 @@
         .start .link-button:nth-child(6) { animation-delay: 3.2s; }
         .start .link-button:nth-child(7) { animation-delay: 3.5s; }
 
-        /* --- AJUSTE PARA TELAS GRANDES (TABLETS, NOTEBOOKS E DESKTOP) --- */
         @media (min-width: 768px) {
             .content-box {
                 max-width: 480px;
@@ -464,7 +466,7 @@
 
     <!-- Tela Inicial -->
     <div id="intro-screen">
-        <div class="enter-btn" id="enter-btn">Tocar para Entrar</div>
+        <div class="enter-btn">Tocar para Entrar</div>
     </div>
 
     <!-- Camadas de Fumaça Realista -->
@@ -582,6 +584,7 @@
         const introScreen = document.getElementById('intro-screen');
         const embersContainer = document.getElementById('embers');
         const profileWrapper = document.getElementById('profile-wrapper');
+        let hasEntered = false;
 
         function createEmbers() {
             const count = window.innerWidth < 480 ? 28 : 42;
@@ -618,13 +621,22 @@
             }
         }
 
-        createRingBurst();
+        function startExperience() {
+            if (hasEntered) return;
+            hasEntered = true;
 
-        introScreen.addEventListener('click', () => {
             introScreen.style.opacity = '0';
+            introScreen.style.pointerEvents = 'none';
             setTimeout(() => { introScreen.style.display = 'none'; }, 600);
+
             document.body.classList.add('start');
             createEmbers();
+        }
+
+        createRingBurst();
+
+        ['pointerdown', 'touchstart', 'click'].forEach((evt) => {
+            introScreen.addEventListener(evt, startExperience, { passive: true });
         });
     </script>
 </body>
