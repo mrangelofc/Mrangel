@@ -9,16 +9,12 @@
     <meta name="rating" content="adult">
     <meta name="rating" content="RTA-5042-1996-1400-1577-RTA">
     <meta name="twitter:card" content="summary_large_image">
-    <!-- Pré-visualização ao compartilhar o link: suba o arquivo preview.jpg na mesma pasta do site e troque
-         o endereço abaixo pelo endereço completo, por exemplo: https://seusite.com/preview.jpg -->
     <meta property="og:image" content="preview.jpg">
     <meta name="twitter:image" content="preview.jpg">
     <meta property="og:title" content="Mr. Angel">
     <meta property="og:description" content="Perfis oficiais e conteúdo exclusivo. Anjo no rosto, diabo nos detalhes.">
     <title>Mr. Angel</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23ffe6b3'/%3E%3Cstop offset='50%25' stop-color='%23ff9933'/%3E%3Cstop offset='100%25' stop-color='%23ff3c00'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%23080403'/%3E%3Crect x='2.5' y='2.5' width='59' height='59' rx='14' fill='none' stroke='%23ff6a1a' stroke-width='3'/%3E%3Cellipse cx='32' cy='13' rx='13' ry='3.8' fill='none' stroke='%23ffbe55' stroke-width='2.6'/%3E%3Cpath d='M21 48 L32 21 L43 48 M25 39 H39' fill='none' stroke='url(%23g)' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M42 46 C48 51, 52 42, 56 45' fill='none' stroke='%23ff4500' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpolygon points='54,41 60,46 53,48' fill='%23ff4500'/%3E%3C/svg%3E">
-    <!-- ANALYTICS (opcional): cole aqui o script do Plausible, Umami ou Google Analytics.
-         Cada clique nos links já é enviado com o nome do destino (privacy, onlyfans, instagram...). -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -34,3 +30,124 @@
             --suave: #cdb9a6;
             --pad: clamp(16px, 5vw, 24px);
             --degrade: linear-gradient(90deg, var(--ouro) 0%, var(--laranja) 52%, var(--carmim) 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100dvh;
+            background: radial-gradient(circle at top, #1f0a06 0%, var(--noite) 65%);
+            color: var(--creme);
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: var(--pad);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 440px;
+            text-align: center;
+        }
+
+        .avatar {
+            width: 104px;
+            height: 104px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            padding: 3px;
+            background: var(--degrade);
+            box-shadow: 0 0 28px rgba(255, 90, 31, 0.35);
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            background: var(--noite);
+            display: block;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: var(--degrade);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+        }
+
+        .bio {
+            color: var(--suave);
+            font-size: 0.92rem;
+            line-height: 1.5;
+            margin-bottom: 28px;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .btn {
+            display: block;
+            text-decoration: none;
+            color: var(--creme);
+            font-weight: 600;
+            font-size: 0.98rem;
+            padding: 15px 20px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(236, 208, 154, 0.22);
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            border-color: var(--laranja);
+            box-shadow: 0 8px 24px rgba(255, 90, 31, 0.25);
+        }
+
+        .btn.destaque {
+            background: var(--degrade);
+            color: #090403;
+            border: none;
+            font-weight: 700;
+        }
+
+        footer {
+            margin-top: 32px;
+            font-size: 0.78rem;
+            color: var(--suave);
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <div class="avatar">
+            <!-- Coloque sua foto de perfil como avatar.jpg na mesma pasta do index.html -->
+            <img src="avatar.jpg" alt="Mr. Angel" onerror="this.style.display='none'">
+        </div>
+
+        <h1>Mr. Angel</h1>
+        <p class="bio">Perfis oficiais e conteúdo exclusivo.<br>Anjo no rosto, diabo nos detalhes.</p>
+
+        <nav class="links">
+            <a class="btn destaque" href="https://privacy.com.br/" target="_blank" rel="noopener noreferrer">Privacy</a>
+            <a class="btn" href="https://onlyfans.com/" target="_blank" rel="noopener noreferrer">OnlyFans</a>
+            <a class="btn" href="https://instagram.com/" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a class="btn" href="https://x.com/" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
+        </nav>
+
+        <footer>© 2026 Mr. Angel · +18</footer>
+    </main>
+</body>
+</html>
